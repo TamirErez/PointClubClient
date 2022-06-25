@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "287008614884",
+    "project_id": "prefab-mile-144812",
+    "storage_bucket": "prefab-mile-144812.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287008614884:android:2d3a5eeb671d95f168bff1",
+        "android_client_info": {
+          "package_name": "pointclub.pointclubclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287008614884-8d0umv2nlmbqgmgsatsdp9efeqmb9d1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVHNArn5AaJdIKNeDCr2qwJS6AefLAyiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287008614884-8d0umv2nlmbqgmgsatsdp9efeqmb9d1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
