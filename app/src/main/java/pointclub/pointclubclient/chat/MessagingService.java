@@ -1,4 +1,4 @@
-package pointclub.pointclubclient.rest;
+package pointclub.pointclubclient.chat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
