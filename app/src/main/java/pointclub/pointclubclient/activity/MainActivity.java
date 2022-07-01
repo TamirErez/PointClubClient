@@ -15,17 +15,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        isServerAlive();
+        setupServer();
+    }
+
+    private void setupServer() {
+        checkServerConnection();
         getToken();
     }
 
-    private void isServerAlive() {
+    private void checkServerConnection() {
         RestController.getInstance().isAlive(booleanResponse -> {
-            if(booleanResponse.isSuccessful()){
-                Log.i("Server Status", "Alive");
-            }
-            else{
-                Log.w("Server Status", "Bad Request");
+            if (booleanResponse == null) {
+                Log.w(SERVER_STATUS_TAG, "Failed to Call Server, trying again");
+                checkServerConnection();
+            } else if (booleanResponse.isSuccessful()) {
+                Log.i(SERVER_STATUS_TAG, "Alive");
+            } else {
+                Log.w(SERVER_STATUS_TAG, "Bad Request");
             }
         });
     }

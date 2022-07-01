@@ -1,5 +1,7 @@
 package pointclub.pointclubclient.rest;
 
+import android.util.Log;
+
 import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,8 @@ public class RestController {
 
             @Override
             public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-                throw new RuntimeException(t);
+                Log.w("Rest Error", t.getMessage());
+                result.accept(null);
             }
         });
     }
