@@ -14,10 +14,12 @@
         android:theme="@style/Theme.PointClubClient"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ChatActivity"
             android:exported="false"
-            android:label="@string/title_activity_chat"
-            android:theme="@style/Theme.PointClubClient.NoActionBar" />
+            android:label="@string/title_activity_chat" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -36,6 +38,7 @@
             </intent-filter>
         </service>
     </application>
+
     <uses-permission
         android:name="android.permission.INTERNET"
         tools:remove="android:maxSdkVersion" />
