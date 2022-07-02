@@ -15,10 +15,12 @@ import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.rest.RestController;
 import pointclub.pointclubclient.service.ActivityLauncherService;
+import pointclub.pointclubclient.service.PopupService;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String SERVER_STATUS_TAG = "Server Status";
+    public static final String popupRegisterMessage = "I see it's your first time in pointclub!\nPlease Register";
     private int userId;
     protected final ActivityLauncherService<Intent, ActivityResult> activityLauncher = ActivityLauncherService.registerActivityForResult(this);
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void registerUserIfNotExist() {
         if (!isUserExist()) {
-            registerUser();
+            PopupService.showPopup(this, this::registerUser, popupRegisterMessage);
         }
     }
 
