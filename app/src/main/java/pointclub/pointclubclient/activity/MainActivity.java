@@ -7,9 +7,12 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.List;
+
 import androidx.activity.result.ActivityResult;
 import androidx.appcompat.app.AppCompatActivity;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.rest.RestController;
 import pointclub.pointclubclient.service.ActivityLauncherService;
 
@@ -24,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupServer();
-        registerUser();
+        registerUserIfNotExist();
     }
 
     private void setupServer() {
@@ -56,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
                     String token = task.getResult();
                     Log.i("Token", token);
                 });
+    }
+
+    private void registerUserIfNotExist() {
+        if (!isUserExist()) {
+            registerUser();
+        }
+    }
+
+    private boolean isUserExist() {
+        List<User> users = User.listAll(User.class);
+        if (users.size() > 0) {
+            Log.i("Query User", users.get(0).toString());
+            return true;
+        }
+        return false;
     }
 
     private void registerUser() {

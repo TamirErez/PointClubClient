@@ -1,13 +1,24 @@
 package pointclub.pointclubclient.model;
 
-import lombok.Data;
+import com.orm.SugarRecord;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class User {
+@NoArgsConstructor
+public class User extends SugarRecord<User> {
+    private int userId;
     private String name;
-    private int id;
 
     public User(String name) {
+        this.name = name;
+    }
+
+    public User(int userId, String name) {
+        this.userId = userId;
         this.name = name;
     }
 }

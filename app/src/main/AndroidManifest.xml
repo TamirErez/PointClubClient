@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PointClubClient"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon"
+        android:name="com.orm.SugarApp">
         <activity
             android:name=".activity.RegisterActivity"
             android:exported="false" />
@@ -37,10 +39,20 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data android:name="DATABASE" android:value="pointclub.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="pointclub.pointclubclient" />
     </application>
 
     <uses-permission
         android:name="android.permission.INTERNET"
+        tools:remove="android:maxSdkVersion"
+        tools:ignore="ManifestOrder" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         tools:remove="android:maxSdkVersion" />
 
 </manifest>

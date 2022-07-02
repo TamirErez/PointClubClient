@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.rest.RestController;
 import retrofit2.Response;
 
@@ -58,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void finishActivity(int userId) {
+        new User(userId, getNameValueFromField()).save();
         Intent i = new Intent();
         i.putExtra("id", userId);
         setResult(Activity.RESULT_OK, i);
