@@ -21,4 +21,8 @@ public class User extends SugarRecord<User> {
         this.userId = userId;
         this.name = name;
     }
+
+    public static User getCurrentUser(){
+        return findAll(User.class).next();
+    }
 }

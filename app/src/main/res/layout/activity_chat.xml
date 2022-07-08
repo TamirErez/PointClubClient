@@ -6,31 +6,49 @@
     android:layout_height="match_parent"
     android:descendantFocusability="afterDescendants">
 
-    <include
-        android:id="@+id/chat_content"
-        layout="@layout/content_scrolling"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_gchat"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/message_editor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_height="match_parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/message_editor_card" />
 
-    <EditText
-        android:id="@+id/message_editor"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/message_editor_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/enter_message"
-        android:importantForAutofill="no"
-        android:inputType="text"
+        app:cardBackgroundColor="#A08BC6"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/message_editor_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <EditText
+                android:id="@+id/message_editor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/transparent"
+                android:padding="5dp"
+                android:ems="10"
+                android:hint="@string/enter_message"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
