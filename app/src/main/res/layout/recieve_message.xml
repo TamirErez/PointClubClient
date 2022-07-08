@@ -58,10 +58,11 @@
         android:text=""
         android:textColor="#C0C0C0"
         android:textSize="11sp"
+        android:layout_marginStart="10dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintBottom_toBottomOf="@+id/card_gchat_message_other"
-        app:layout_constraintStart_toEndOf="@+id/card_gchat_message_other" />
+        app:layout_constraintStart_toStartOf="@+id/card_gchat_message_other"
+        app:layout_constraintTop_toBottomOf="@id/card_gchat_message_other" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
