@@ -19,8 +19,8 @@ import pointclub.pointclubclient.model.User;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private MessageListAdapter mMessageAdapter;
-    private RecyclerView mMessageRecycler;
+    private MessageListAdapter messageAdapter;
+    private RecyclerView messageRecycler;
     private final List<Message> messageList = new ArrayList<>();
     private EditText messageEditor;
 
@@ -29,23 +29,28 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mMessageRecycler = findViewById(R.id.recycler_gchat);
-        mMessageAdapter = new MessageListAdapter(this, messageList);
-        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mMessageRecycler.setAdapter(mMessageAdapter);
+        messageRecycler = findViewById(R.id.recycler_gchat);
+        messageAdapter = new MessageListAdapter(this, messageList);
+        messageRecycler.setLayoutManager(new LinearLayoutManager(this));
+        messageRecycler.setAdapter(messageAdapter);
         messageEditor = findViewById(R.id.message_editor);
         setActionListenerOnMessageEditor();
     }
 
     private void setActionListenerOnMessageEditor() {
         messageEditor.setOnEditorActionListener((textView, actionId, event) -> {
-            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            if (isEnterPressed(event) && textView.getText().length() > 0) {
                 messageList.add(new Message(1, new User(20, "tamir"),
                         textView.getText().toString(), new Date()));
-                mMessageAdapter.notifyItemInserted(messageList.size() - 1);
+                messageAdapter.notifyItemInserted(messageAdapter.getItemCount() - 1);
+                messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
                 messageEditor.setText("");
             }
             return true;
         });
+    }
+
+    private boolean isEnterPressed(KeyEvent event) {
+        return event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER;
     }
 }
