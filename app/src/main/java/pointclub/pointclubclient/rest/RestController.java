@@ -1,11 +1,11 @@
 package pointclub.pointclubclient.rest;
 
-import android.util.Log;
-
 import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.model.User;
+import pointclub.pointclubclient.service.log.LogService;
+import pointclub.pointclubclient.service.log.LogTag;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,7 +30,7 @@ public class RestController {
 
             @Override
             public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-                Log.w("Rest Error", t.getMessage());
+                LogService.warn(LogTag.REST_ERROR, t.getMessage());
                 result.accept(null);
             }
         });
