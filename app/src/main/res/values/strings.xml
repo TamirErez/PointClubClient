@@ -7,4 +7,5 @@
     <string name="registerRequest">Please Register by Entering a Name</string>
     <string name="ok">OK</string>
     <string name="placeholder">PLACEHOLDER</string>
+    <string name="add_room_button">add room button</string>
 </resources>

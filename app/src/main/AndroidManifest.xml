@@ -4,6 +4,7 @@
     package="pointclub.pointclubclient">
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,11 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PointClubClient"
         android:usesCleartextTraffic="true"
-        tools:replace="android:icon"
-        android:name="com.orm.SugarApp">
+        tools:replace="android:icon">
         <activity
             android:name=".activity.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@android:style/Theme.Holo.Dialog" />
         <activity
             android:name=".activity.ChatActivity"
             android:exported="false"
@@ -40,16 +41,24 @@
             </intent-filter>
         </service>
 
-        <meta-data android:name="DATABASE" android:value="pointclub.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="pointclub.pointclubclient" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="pointclub.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="pointclub.pointclubclient" />
     </application>
 
     <uses-permission
         android:name="android.permission.INTERNET"
-        tools:remove="android:maxSdkVersion"
-        tools:ignore="ManifestOrder" />
+        tools:ignore="ManifestOrder"
+        tools:remove="android:maxSdkVersion" />
 
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
