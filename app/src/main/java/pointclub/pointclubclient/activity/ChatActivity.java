@@ -30,7 +30,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         messageRecycler = findViewById(R.id.recycler_gchat);
-        messageAdapter = new MessageListAdapter(this, messageList);
+        messageAdapter = new MessageListAdapter(messageList);
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
         messageEditor = findViewById(R.id.message_editor);

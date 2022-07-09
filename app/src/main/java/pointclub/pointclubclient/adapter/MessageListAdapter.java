@@ -1,6 +1,5 @@
 package pointclub.pointclubclient.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +31,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private final Context mContext;
     private final List<Message> mMessageList;
 
-    public MessageListAdapter(Context context, List<Message> messageList) {
-        mContext = context;
+    public MessageListAdapter(List<Message> messageList) {
         mMessageList = messageList;
     }
 
@@ -45,7 +42,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mMessageList.size();
     }
 
-    // Determines the appropriate ViewType according to the sender of the message.
     @Override
     public int getItemViewType(int position) {
         Message message = mMessageList.get(position);
