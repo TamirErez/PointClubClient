@@ -3,9 +3,11 @@ package pointclub.pointclubclient.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.activity.result.ActivityResult;
@@ -26,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected final ActivityLauncherService<Intent, ActivityResult> activityLauncher = ActivityLauncherService.registerActivityForResult(this);
     private RoomListAdapter roomAdapter;
-    private final List<Room> roomList = Room.listAll(Room.class);
+    private List<Room> roomList = new ArrayList<>();
+    private RecyclerView roomRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupServer();
         registerUserIfNotExist();
+        initRooms();
         initRoomRecycler();
         setRegisterRoomButtonAction();
     }
@@ -113,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
     private void addRoom(String roomName) {
         roomList.add(0, Room.find(Room.class, "name = ?", roomName).get(0));
         roomAdapter.notifyItemInserted(0);
+        roomRecycler.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+        roomRecycler.smoothScrollToPosition(0);
     }
 
     private void setRegisterRoomButtonAction() {
@@ -120,10 +126,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRoomRecycler() {
-        RecyclerView roomRecycler = findViewById(R.id.room_recycler);
+        roomRecycler = findViewById(R.id.room_recycler);
         roomAdapter = new RoomListAdapter(roomList);
         roomRecycler.setLayoutManager(new LinearLayoutManager(this));
         roomRecycler.setAdapter(roomAdapter);
+    }
+
+    private void initRooms() {
+        RestController.getInstance().getAllRooms(listResponse -> {
+            roomList = listResponse.body() != null ? listResponse.body() : new ArrayList<>();
+            roomList.sort((o1, o2) -> o2.getId().compareTo(o1.getId()));
+        });
     }
 
     private void checkServerConnection() {

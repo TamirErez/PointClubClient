@@ -1,14 +1,15 @@
 package pointclub.pointclubclient.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.model.Room;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -21,7 +22,9 @@ public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RoomListAdapter.RoomHolder(new TextView(parent.getContext()));
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.room_preview, parent, false);
+        return new RoomListAdapter.RoomHolder(view);
     }
 
     @Override
@@ -41,8 +44,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(Room room) {
-            ((TextView) itemView).setText(room.getName());
-            ((TextView) itemView).setTextSize(20);
+            ((TextView) itemView.findViewById(R.id.room_name_preview)).setText(room.getName());
         }
     }
 }

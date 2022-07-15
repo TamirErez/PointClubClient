@@ -1,5 +1,6 @@
 package pointclub.pointclubclient.rest;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,9 @@ public class RestController {
         callRest(RetrofitClient.getInstance().getRequestsApi().registerRoom(new Room(roomName)), result);
     }
 
+    public void getAllRooms(Consumer<Response<List<Room>>> result) {
+        callRest(RetrofitClient.getInstance().getRequestsApi().getAllRooms(), result);
+    }
     private <T> void callRest(Call<T> call, Consumer<Response<T>> result) {
         call.enqueue(new Callback<>() {
             @Override
