@@ -3,7 +3,6 @@ package pointclub.pointclubclient.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ViewGroup;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -117,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
     private void addRoom(String roomName) {
         roomList.add(0, Room.find(Room.class, "name = ?", roomName).get(0));
         roomAdapter.notifyItemInserted(0);
-        roomRecycler.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
         roomRecycler.smoothScrollToPosition(0);
     }
 
@@ -134,7 +132,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRooms() {
         RestController.getInstance().getAllRooms(listResponse -> {
-            roomList = listResponse.body() != null ? listResponse.body() : new ArrayList<>();
+            if (listResponse != null && listResponse.body() != null && listResponse.isSuccessful()) {
+                roomList.addAll(listResponse.body());
+                roomAdapter.notifyItemRangeInserted(0, roomList.size());
+            }
             roomList.sort((o1, o2) -> o2.getId().compareTo(o1.getId()));
         });
     }
