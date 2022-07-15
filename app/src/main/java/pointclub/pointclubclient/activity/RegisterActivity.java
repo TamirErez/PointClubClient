@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.function.Consumer;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.rest.RestController;
 import retrofit2.Response;
@@ -50,6 +49,11 @@ public class RegisterActivity extends Activity {
         });
     }
 
+    private boolean isEnterPressed(int keyCode, KeyEvent event) {
+        return (event.getAction() == KeyEvent.ACTION_DOWN) &&
+                (keyCode == KeyEvent.KEYCODE_ENTER);
+    }
+
     private void setRegisterButtonAction() {
         findViewById(R.id.registerButton).setOnClickListener(v -> register());
     }
@@ -67,37 +71,51 @@ public class RegisterActivity extends Activity {
 
     private void registerUser() {
         RestController.getInstance().registerUser(
-                getNameValueFromField(),
-                extractResponseFromServer()
+                getRegisterValue(),
+                this::saveUserWithServerId
         );
     }
 
     private void registerRoom() {
+        RestController.getInstance().registerRoom(
+                getRegisterValue(),
+                this::saveRoomWithServerId
+        );
+    }
+
+    private void saveRoomWithServerId(Response<Integer> response) {
+        if (response != null && response.isSuccessful() && response.body() != null) {
+            saveRoom(response.body());
+        } else {
+            Toast.makeText(this, "Failed to save room", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveRoom(int roomId) {
+        String roomName = getRegisterValue();
+        new Room(roomId, roomName).save();
+        Intent i = new Intent();
+        i.putExtra("id", roomId);
+        i.putExtra("name", roomName);
+        setResult(Activity.RESULT_OK, i);
         finish();
     }
 
-
-    private boolean isEnterPressed(int keyCode, KeyEvent event) {
-        return (event.getAction() == KeyEvent.ACTION_DOWN) &&
-                (keyCode == KeyEvent.KEYCODE_ENTER);
-    }
-
     @NonNull
-    private String getNameValueFromField() {
+    private String getRegisterValue() {
         return ((EditText) findViewById(R.id.registerInputField)).getText().toString();
     }
 
-    @NonNull
-    private Consumer<Response<Integer>> extractResponseFromServer() {
-        return response -> {
-            if (response.isSuccessful() && response.body() != null) {
-                saveUser(response.body());
-            }
-        };
+    private void saveUserWithServerId(Response<Integer> response) {
+        if (response != null && response.isSuccessful() && response.body() != null) {
+            saveUser(response.body());
+        } else {
+            Toast.makeText(this, "Failed to save user", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void saveUser(int userId) {
-        new User(userId, getNameValueFromField()).save();
+        new User(userId, getRegisterValue()).save();
         Intent i = new Intent();
         i.putExtra("id", userId);
         setResult(Activity.RESULT_OK, i);

@@ -1,5 +1,6 @@
 package pointclub.pointclubclient.rest;
 
+import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,4 +13,7 @@ public interface RequestsApi {
 
     @POST("user/add")
     Call<Integer> registerUser(@Body User user);
+
+    @POST("room/add")
+    Call<Integer> registerRoom(@Body Room room);
 }

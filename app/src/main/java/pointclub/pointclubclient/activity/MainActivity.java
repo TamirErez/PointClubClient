@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.activity.result.ActivityResult;
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.RoomListAdapter;
 import pointclub.pointclubclient.model.Room;
@@ -26,11 +24,9 @@ import pointclub.pointclubclient.service.log.LogTag;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String popupRegisterMessage = "I see it's your first time in pointclub!\nPlease Register";
     protected final ActivityLauncherService<Intent, ActivityResult> activityLauncher = ActivityLauncherService.registerActivityForResult(this);
     private RoomListAdapter roomAdapter;
-    private RecyclerView roomRecycler;
-    private final List<Room> roomList = new ArrayList<>();
+    private final List<Room> roomList = Room.listAll(Room.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,34 +51,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void showRegisterDialog(RegisterActivity.REGISTER_OPTION registerOption) {
         Intent intent = buildRegisterIntent(registerOption);
-        launchRegisterActivity(intent);
+        launchRegisterActivity(intent, registerOption);
     }
 
     @NonNull
     private Intent buildRegisterIntent(RegisterActivity.REGISTER_OPTION registerOption) {
+        String title = getRegisterTitle(registerOption);
         Intent intent = new Intent(this, RegisterActivity.class);
         intent = intent.putExtra("option", registerOption);
-        String title = "Register";
-        switch (registerOption) {
-            case room:
-                title = "Please Enter Room Name";
-                LogService.info(LogTag.REGISTER, "Start Room Register");
-                break;
-            case user:
-                LogService.info(LogTag.REGISTER, "Start User Register");
-                title = popupRegisterMessage;
-                break;
-        }
         intent = intent.putExtra("title", title);
         return intent;
     }
 
-    private void launchRegisterActivity(Intent intent) {
+    private String getRegisterTitle(RegisterActivity.REGISTER_OPTION registerOption) {
+        switch (registerOption) {
+            case room:
+                LogService.info(LogTag.REGISTER, "Start Room Register");
+                return "Please Enter Room Name";
+            case user:
+                LogService.info(LogTag.REGISTER, "Start User Register");
+                return getResources().getString(R.string.register_user_message);
+            default:
+                return "Register";
+        }
+    }
+
+    private void launchRegisterActivity(Intent intent, RegisterActivity.REGISTER_OPTION registerOption) {
         activityLauncher.launch(intent, result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                Intent data = result.getData();
-                if (data != null) {
-                    LogService.info(LogTag.REGISTER, "New id: " + data.getIntExtra("id", -1));
+            if (isActivityResultOK(result)) {
+                Intent registerData = result.getData();
+                if (registerData != null) {
+                    handleRegisterResult(registerData, registerOption);
                 } else {
                     LogService.error(LogTag.REGISTER, "Failed to Register");
                 }
@@ -90,12 +89,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isActivityResultOK(ActivityResult result) {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            return true;
+        } else {
+            LogService.error(LogTag.REGISTER, "Activity failed");
+            return false;
+        }
+    }
+
+    private void handleRegisterResult(Intent registerData, RegisterActivity.REGISTER_OPTION registerOption) {
+        switch (registerOption) {
+            case user:
+                LogService.info(LogTag.REGISTER, "New User id: " + registerData.getIntExtra("id", -1));
+                break;
+            case room:
+                addRoom(registerData.getStringExtra("name"));
+                LogService.info(LogTag.REGISTER, "New Room id: " + registerData.getIntExtra("id", -1));
+                break;
+        }
+    }
+
+    private void addRoom(String roomName) {
+        roomList.add(0, Room.find(Room.class, "name = ?", roomName).get(0));
+        roomAdapter.notifyItemInserted(0);
+    }
+
     private void setRegisterRoomButtonAction() {
         findViewById(R.id.add_room_button).setOnClickListener(v -> showRegisterDialog(RegisterActivity.REGISTER_OPTION.room));
     }
 
     private void initRoomRecycler() {
-        roomRecycler = findViewById(R.id.room_recycler);
+        RecyclerView roomRecycler = findViewById(R.id.room_recycler);
         roomAdapter = new RoomListAdapter(roomList);
         roomRecycler.setLayoutManager(new LinearLayoutManager(this));
         roomRecycler.setAdapter(roomAdapter);

@@ -8,4 +8,5 @@
     <string name="ok">OK</string>
     <string name="placeholder">PLACEHOLDER</string>
     <string name="add_room_button">add room button</string>
+    <string name="register_user_message">I see it\'s your first time in pointclub!\nPlease Register</string>
 </resources>
