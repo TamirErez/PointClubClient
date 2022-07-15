@@ -137,7 +137,14 @@ public class MainActivity extends AppCompatActivity {
                 roomAdapter.notifyItemRangeInserted(0, roomList.size());
             }
             roomList.sort((o1, o2) -> o2.getId().compareTo(o1.getId()));
+            syncRoomsWithServer();
         });
+    }
+
+    private void syncRoomsWithServer() {
+        List<Room> rooms = Room.listAll(Room.class);
+        rooms.removeAll(roomList);
+        rooms.forEach(Room::delete);
     }
 
     private void checkServerConnection() {
