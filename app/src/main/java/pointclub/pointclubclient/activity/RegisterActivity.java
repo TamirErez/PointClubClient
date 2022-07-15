@@ -59,6 +59,7 @@ public class RegisterActivity extends Activity {
     }
 
     private void register() {
+        if (getRegisterValue().length() == 0) return;
         switch (registerOption) {
             case user:
                 registerUser();
