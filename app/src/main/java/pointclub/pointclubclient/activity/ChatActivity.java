@@ -4,37 +4,51 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.MessageListAdapter;
 import pointclub.pointclubclient.model.Message;
+import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
 
 public class ChatActivity extends AppCompatActivity {
 
     private MessageListAdapter messageAdapter;
     private RecyclerView messageRecycler;
-    private final List<Message> messageList = new ArrayList<>();
+    private List<Message> messageList;
     private EditText messageEditor;
+    private Room room;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        extractRoomFromIntent();
+        getRoomMessages();
+        setupMessageRecycler();
+        messageEditor = findViewById(R.id.message_editor);
+        setActionListenerOnMessageEditor();
+    }
+
+    private void extractRoomFromIntent() {
+        room = Room.findById(Room.class, getIntent().getExtras().getLong("roomId"));
+    }
+
+    private void getRoomMessages() {
+        messageList = room.getMessages();
+    }
+
+    private void setupMessageRecycler() {
         messageRecycler = findViewById(R.id.recycler_gchat);
         messageAdapter = new MessageListAdapter(messageList);
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
-        messageEditor = findViewById(R.id.message_editor);
-        setActionListenerOnMessageEditor();
     }
 
     private void setActionListenerOnMessageEditor() {
