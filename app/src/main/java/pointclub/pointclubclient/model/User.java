@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class User extends SugarRecord<User> {
-    private int userId;
+    private int serverId;
     private String name;
 
     public User(String name) {
         this.name = name;
     }
 
-    public User(int userId, String name) {
-        this.userId = userId;
+    public User(int serverId, String name) {
+        this.serverId = serverId;
         this.name = name;
     }
 

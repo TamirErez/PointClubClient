@@ -5,13 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.User;
@@ -45,7 +44,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
         Message message = mMessageList.get(position);
-        if (message.getSender().getUserId() == User.getCurrentUser().getUserId()) {
+        if (message.getSender().getServerId() == User.getCurrentUser().getServerId()) {
             return messageType.sender.getValue();
         } else {
             return messageType.receiver.getValue();

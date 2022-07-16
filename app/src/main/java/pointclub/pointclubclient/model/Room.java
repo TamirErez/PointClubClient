@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Room extends SugarRecord<Room> {
-
-    private int roomId;
+    private int serverId;
     private String name;
     @Ignore
     private List<User> users = new ArrayList<>();
@@ -24,12 +23,12 @@ public class Room extends SugarRecord<Room> {
         this.name = name;
     }
 
-    public Room(int roomId, String name) {
-        this.roomId = roomId;
+    public Room(int serverId, String name) {
+        this.serverId = serverId;
         this.name = name;
     }
 
     public List<Message> getMessages() {
-        return Message.find(Message.class, "room = ?", String.valueOf(roomId));
+        return Message.find(Message.class, "room = ?", String.valueOf(serverId));
     }
 }
