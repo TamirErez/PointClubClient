@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
+import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.service.log.LogService;
@@ -30,6 +31,11 @@ public class RestController {
     public void getAllRooms(Consumer<Response<List<Room>>> result) {
         callRest(RetrofitClient.getInstance().getRequestsApi().getAllRooms(), result);
     }
+
+    public void sendMessage(Message newMessage, Consumer<Response<Integer>> result) {
+        callRest(RetrofitClient.getInstance().getRequestsApi().addMessage(newMessage), result);
+    }
+
     private <T> void callRest(Call<T> call, Consumer<Response<T>> result) {
         call.enqueue(new Callback<>() {
             @Override

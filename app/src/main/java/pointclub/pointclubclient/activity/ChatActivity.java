@@ -15,6 +15,7 @@ import pointclub.pointclubclient.adapter.MessageListAdapter;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
+import pointclub.pointclubclient.rest.RestController;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -54,13 +55,29 @@ public class ChatActivity extends AppCompatActivity {
     private void setActionListenerOnMessageEditor() {
         messageEditor.setOnEditorActionListener((textView, actionId, event) -> {
             if (isEnterPressed(event) && textView.getText().length() > 0) {
-                messageList.add(new Message(1, new User(20, "tamir"),
-                        textView.getText().toString(), new Date()));
-                messageAdapter.notifyItemInserted(messageAdapter.getItemCount() - 1);
-                messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
-                messageEditor.setText("");
+                Message newMessage = new Message(-1, textView.getText().toString(),
+                        new Date(), room, User.getCurrentUser());
+                addMessageToView(newMessage);
+                sendMessageToServer(newMessage);
             }
             return true;
+        });
+    }
+
+    private void addMessageToView(Message newMessage) {
+        messageList.add(newMessage);
+        messageAdapter.notifyItemInserted(messageAdapter.getItemCount() - 1);
+        messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+        messageEditor.setText("");
+        newMessage.save();
+    }
+
+    private void sendMessageToServer(Message newMessage) {
+        RestController.getInstance().sendMessage(newMessage, response -> {
+            if (response != null && response.body() != null && response.isSuccessful()) {
+                newMessage.setServerId(response.body());
+                newMessage.save();
+            }
         });
     }
 

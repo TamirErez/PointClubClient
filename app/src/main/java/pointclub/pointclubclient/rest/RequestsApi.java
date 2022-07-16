@@ -2,6 +2,7 @@ package pointclub.pointclubclient.rest;
 
 import java.util.List;
 
+import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
 import retrofit2.Call;
@@ -21,4 +22,7 @@ public interface RequestsApi {
 
     @GET("room")
     Call<List<Room>> getAllRooms();
+
+    @POST("message/add")
+    Call<Integer> addMessage(@Body Message message);
 }
