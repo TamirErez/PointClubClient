@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRoomRecycler() {
         roomRecycler = findViewById(R.id.room_recycler);
-        roomAdapter = new RoomListAdapter(roomList);
+        roomAdapter = new RoomListAdapter(roomList, this);
         roomRecycler.setLayoutManager(new LinearLayoutManager(this));
         roomRecycler.setAdapter(roomAdapter);
     }
@@ -143,6 +143,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void syncRoomsWithServer() {
         List<Room> rooms = Room.listAll(Room.class);
+        roomList.forEach(room -> {
+            if (!rooms.contains(room)) {
+                room.setId(null);
+                room.save();
+            }
+        });
         rooms.removeAll(roomList);
         rooms.forEach(Room::delete);
     }
