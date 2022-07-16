@@ -104,7 +104,7 @@ public class RegisterActivity extends Activity {
 
     @NonNull
     private String getRegisterValue() {
-        return ((EditText) findViewById(R.id.registerInputField)).getText().toString();
+        return ((EditText) findViewById(R.id.registerInputField)).getText().toString().trim();
     }
 
     private void saveUserWithServerId(Response<Integer> response) {
