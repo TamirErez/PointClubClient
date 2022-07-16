@@ -1,5 +1,7 @@
 package pointclub.pointclubclient.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,16 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.activity.ChatActivity;
 import pointclub.pointclubclient.model.Room;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Room> roomList;
+    Context context;
 
-    public RoomListAdapter(List<Room> roomList) {
+    public RoomListAdapter(List<Room> roomList, Context context) {
         this.roomList = roomList;
+        this.context = context;
     }
 
     @NonNull
@@ -30,6 +35,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((RoomHolder) holder).bind(roomList.get(position));
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        View newRoomView = holder.itemView.findViewById(R.id.room_preview_card);
+        newRoomView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra("roomId", roomList.get(0).getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
