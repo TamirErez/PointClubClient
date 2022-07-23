@@ -2,6 +2,7 @@ package pointclub.pointclubclient.chess.piece;
 
 import java.util.List;
 
+import pointclub.pointclubclient.chess.GameState;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
@@ -15,7 +16,7 @@ public class EmptyPiece extends AbstractPiece {
     }
 
     @Override
-    public List<Move> getPossibleMoves() {
+    public List<Move> getPossibleMoves(GameState gameState) {
         return List.of();
     }
 
