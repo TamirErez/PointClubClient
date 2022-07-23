@@ -3,15 +3,19 @@ package pointclub.pointclubclient.chess.move;
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import pointclub.pointclubclient.chess.enums.Direction;
 
 @Data
-@AllArgsConstructor
 public class Position {
     private int row;
     private int column;
+    public static final Position EMPTY_POSITION = new Position(-1, -1);
+
+    public Position(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
 
     public Position transform(Direction... directions) {
         Position pos = new Position(row, column);
