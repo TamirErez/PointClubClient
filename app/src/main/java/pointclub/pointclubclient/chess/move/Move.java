@@ -3,14 +3,14 @@ package pointclub.pointclubclient.chess.move;
 import androidx.annotation.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import pointclub.pointclubclient.chess.piece.Piece;
+import pointclub.pointclubclient.chess.piece.AbstractPiece;
 
 @Data
 @AllArgsConstructor
 public class Move {
     Position start;
     Position end;
-    Piece movingPiece;
+    AbstractPiece movingPiece;
 
     @NonNull
     @Override
