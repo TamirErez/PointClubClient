@@ -1,6 +1,6 @@
 package pointclub.pointclubclient.service.chess;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +13,28 @@ import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.chess.enums.PieceImage;
 
-public class ChessViewFactory {
+public class BoardView extends TableLayout {
 
-    private final Activity containingActivity;
     private final int squareLength;
+    private FrameLayout selectedPiece = null;
 
-    public ChessViewFactory(Activity containingActivity) {
-        this.containingActivity = containingActivity;
+    public BoardView(Context context) {
+        super(context);
         squareLength = getScreenWidth() / 8;
+        buildBoard();
     }
 
-    public TableLayout buildBoard() {
-        TableLayout board = new TableLayout(containingActivity);
-        board.setId(View.generateViewId());
-        board.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    public void buildBoard() {
+        setId(View.generateViewId());
+        setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         for (int rowIndex = 0; rowIndex < 4; rowIndex++) {
-            addTwoRows(board, createRowBlackStart(rowIndex * 2), createRowWhiteStart(rowIndex * 2 + 1));
+            addTwoRows(createRowBlackStart(rowIndex * 2), createRowWhiteStart(rowIndex * 2 + 1));
         }
-        return board;
     }
 
-    private void addTwoRows(TableLayout board, TableRow rowBlackStart, TableRow rowWhiteStart) {
-        board.addView(rowWhiteStart, 0);
-        board.addView(rowBlackStart, 1);
+    private void addTwoRows(TableRow rowBlackStart, TableRow rowWhiteStart) {
+        addView(rowWhiteStart, 0);
+        addView(rowBlackStart, 1);
     }
 
     private TableRow createRowWhiteStart(int rowIndex) {
@@ -48,7 +47,7 @@ public class ChessViewFactory {
 
     @NonNull
     private TableRow createRow(boolean isWhite, int rowIndex) {
-        TableRow row = new TableRow(containingActivity);
+        TableRow row = new TableRow(getContext());
         row.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         row.setGravity(Gravity.CENTER);
         for (int colIndex = 0; colIndex < 4; colIndex++) {
@@ -63,7 +62,7 @@ public class ChessViewFactory {
 
     private int positionToId(int rowIndex, int colIndex) {
         String id = (char) ('a' + colIndex) + String.valueOf(rowIndex);
-        return containingActivity.getResources().getIdentifier(id, "id", containingActivity.getPackageName());
+        return getContext().getResources().getIdentifier(id, "id", getContext().getPackageName());
     }
 
     private void addTwoSquares(TableRow row, View blackSquare, View whiteSquare) {
@@ -83,9 +82,9 @@ public class ChessViewFactory {
 
     @NonNull
     private View createSquare(int drawableSquare, int id) {
-        FrameLayout frameLayout = new FrameLayout(containingActivity);
+        FrameLayout frameLayout = new FrameLayout(getContext());
         frameLayout.setId(id);
-        ImageView blackSquare = new ImageView(containingActivity);
+        ImageView blackSquare = new ImageView(getContext());
 
         blackSquare.setImageResource(drawableSquare);
         blackSquare.setLayoutParams(new FrameLayout.LayoutParams(squareLength, squareLength, Gravity.CENTER));
@@ -95,18 +94,39 @@ public class ChessViewFactory {
     }
 
     private int getScreenWidth() {
-        return containingActivity.getWindowManager().getCurrentWindowMetrics().getBounds().width();
+        return getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
     public int getSquareLength() {
         return squareLength;
     }
 
-    public View buildPieceImage(PieceImage pieceImage) {
-        ImageView piece = new ImageView(containingActivity);
+    public View buildPieceView(PieceImage pieceImage) {
+        ImageView piece = new ImageView(getContext());
         piece.setImageResource(pieceImage.getValue());
         piece.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
         piece.setTag("piece");
+        piece.setOnClickListener(v -> selectPiece(piece));
         return piece;
+    }
+
+    private void selectPiece(ImageView piece) {
+        FrameLayout pieceParent = (FrameLayout) piece.getParent();
+        if (selectedPiece != null) {
+            selectedPiece.removeViewAt(1);
+            if (selectedPiece.equals(pieceParent)) {
+                selectedPiece = null;
+                return;
+            }
+        }
+        pieceParent.addView(buildSelectView(), 1);
+        selectedPiece = pieceParent;
+    }
+
+    private View buildSelectView() {
+        ImageView selectView = new ImageView(getContext());
+        selectView.setImageResource(R.drawable.select_square);
+        selectView.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        return selectView;
     }
 }

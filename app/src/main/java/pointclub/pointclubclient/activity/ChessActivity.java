@@ -2,7 +2,7 @@ package pointclub.pointclubclient.activity;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
-import android.widget.TableLayout;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,15 +10,14 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.chess.enums.PieceImage;
 import pointclub.pointclubclient.service.ConstraintsService;
-import pointclub.pointclubclient.service.chess.ChessViewFactory;
+import pointclub.pointclubclient.service.chess.BoardView;
 import pointclub.pointclubclient.service.log.LogService;
 import pointclub.pointclubclient.service.log.LogTag;
 
 public class ChessActivity extends AppCompatActivity {
 
-    ChessViewFactory chessViewFactory;
+    private BoardView board;
     private ConstraintLayout chessLayout;
-    private TableLayout board;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +30,8 @@ public class ChessActivity extends AppCompatActivity {
     }
 
     private void initFields() {
-        chessViewFactory = new ChessViewFactory(this);
         chessLayout = findViewById(R.id.chess_layout);
-        board = chessViewFactory.buildBoard();
+        board = new BoardView(this);
     }
 
     private void addBoardToCenter() {
@@ -50,7 +48,7 @@ public class ChessActivity extends AppCompatActivity {
             return;
         }
         FrameLayout square = getSquareAtPosition(position);
-        square.addView(chessViewFactory.buildPieceImage(pieceImage));
+        square.addView(board.buildPieceView(pieceImage));
     }
 
     private FrameLayout getSquareAtPosition(String position) {
