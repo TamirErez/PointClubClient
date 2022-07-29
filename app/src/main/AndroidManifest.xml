@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
+            android:name=".activity.ChessActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.RegisterActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Holo.Dialog" />
@@ -33,17 +36,10 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".service.MessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <meta-data
             android:name="DATABASE"
             android:value="pointclub.db" />
+
         <meta-data
             android:name="VERSION"
             android:value="2" />
@@ -53,15 +49,22 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="pointclub.pointclubclient" />
+        <service
+            android:name=".service.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:remove="android:maxSdkVersion"
+        tools:ignore="ManifestOrder" />
 
     <uses-permission
         android:name="android.permission.INTERNET"
         tools:ignore="ManifestOrder"
-        tools:remove="android:maxSdkVersion" />
-
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
         tools:remove="android:maxSdkVersion" />
 
 </manifest>
