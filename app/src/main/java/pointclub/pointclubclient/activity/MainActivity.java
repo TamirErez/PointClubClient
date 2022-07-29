@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import androidx.activity.result.ActivityResult;
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 roomList.addAll(listResponse.body());
                 roomAdapter.notifyItemRangeInserted(0, roomList.size());
             }
-            roomList.sort((o1, o2) -> o2.getId().compareTo(o1.getId()));
+            roomList.sort(Comparator.comparingInt(Room::getServerId));
             syncRoomsWithServer();
         });
     }
