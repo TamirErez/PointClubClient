@@ -63,4 +63,12 @@
     <item name="g7" type="id"/>
     <item name="g8" type="id"/>
 
+    <item name="h1" type="id"/>
+    <item name="h2" type="id"/>
+    <item name="h3" type="id"/>
+    <item name="h4" type="id"/>
+    <item name="h5" type="id"/>
+    <item name="h6" type="id"/>
+    <item name="h7" type="id"/>
+    <item name="h8" type="id"/>
 </resources>
