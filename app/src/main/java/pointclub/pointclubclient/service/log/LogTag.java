@@ -5,5 +5,6 @@ public enum LogTag {
     TOKEN,
     QUERY_USER,
     REGISTER,
-    REST_ERROR
+    REST_ERROR,
+    CHESS
 }
