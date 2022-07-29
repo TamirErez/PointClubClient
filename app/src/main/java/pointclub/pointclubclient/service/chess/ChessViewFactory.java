@@ -11,13 +11,16 @@ import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.chess.enums.PieceImage;
 
-public class ViewFactoryService {
+public class ChessViewFactory {
 
     private final Activity containingActivity;
+    private final int squareLength;
 
-    public ViewFactoryService(Activity containingActivity) {
+    public ChessViewFactory(Activity containingActivity) {
         this.containingActivity = containingActivity;
+        squareLength = getScreenWidth() / 8;
     }
 
     public TableLayout buildBoard() {
@@ -31,8 +34,8 @@ public class ViewFactoryService {
     }
 
     private void addTwoRows(TableLayout board, TableRow rowBlackStart, TableRow rowWhiteStart) {
-        board.addView(rowBlackStart);
-        board.addView(rowWhiteStart);
+        board.addView(rowWhiteStart, 0);
+        board.addView(rowBlackStart, 1);
     }
 
     private TableRow createRowWhiteStart(int rowIndex) {
@@ -51,8 +54,8 @@ public class ViewFactoryService {
         for (int colIndex = 0; colIndex < 4; colIndex++) {
             int firstPosition = positionToId(rowIndex + 1, colIndex * 2);
             int secondPosition = positionToId(rowIndex + 1, colIndex * 2 + 1);
-            View firstSquare = isWhite ? createWhiteSquare(firstPosition) : createBlackSquare(secondPosition);
-            View secondSquare = isWhite ? createBlackSquare(secondPosition) : createWhiteSquare(firstPosition);
+            View firstSquare = isWhite ? createWhiteSquare(firstPosition) : createBlackSquare(firstPosition);
+            View secondSquare = isWhite ? createBlackSquare(secondPosition) : createWhiteSquare(secondPosition);
             addTwoSquares(row, firstSquare, secondSquare);
         }
         return row;
@@ -80,7 +83,6 @@ public class ViewFactoryService {
 
     @NonNull
     private View createSquare(int drawableSquare, int id) {
-        int squareLength = getScreenWidth() / 8;
         FrameLayout frameLayout = new FrameLayout(containingActivity);
         frameLayout.setId(id);
         ImageView blackSquare = new ImageView(containingActivity);
@@ -94,5 +96,17 @@ public class ViewFactoryService {
 
     private int getScreenWidth() {
         return containingActivity.getWindowManager().getCurrentWindowMetrics().getBounds().width();
+    }
+
+    public int getSquareLength() {
+        return squareLength;
+    }
+
+    public View buildPieceImage(PieceImage pieceImage) {
+        ImageView piece = new ImageView(containingActivity);
+        piece.setImageResource(pieceImage.getValue());
+        piece.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        piece.setTag("piece");
+        return piece;
     }
 }
