@@ -187,6 +187,7 @@ public class BoardView extends TableLayout {
 
         ImageView piece = startSquare.findViewWithTag(PIECE_TAG);
         startSquare.removeView(piece);
+        endSquare.removeView(endSquare.findViewWithTag(PIECE_TAG));
         endSquare.addView(piece);
     }
 
