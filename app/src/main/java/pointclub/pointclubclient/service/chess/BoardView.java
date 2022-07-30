@@ -9,14 +9,22 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.activity.ChessActivity;
 import pointclub.pointclubclient.chess.enums.PieceImage;
 
 public class BoardView extends TableLayout {
 
+    public static final String SELECT_TAG = "select";
+    public static final String MOVE_TAG = "move";
+    public static final String PIECE_TAG = "piece";
     private final int squareLength;
     private FrameLayout selectedPiece = null;
+    private List<FrameLayout> possibleMoves = new ArrayList<>();
 
     public BoardView(Context context) {
         super(context);
@@ -105,17 +113,22 @@ public class BoardView extends TableLayout {
         ImageView piece = new ImageView(getContext());
         piece.setImageResource(pieceImage.getValue());
         piece.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
-        piece.setTag("piece");
-        piece.setOnClickListener(v -> selectPiece(piece));
+        piece.setTag(PIECE_TAG);
+        piece.setOnClickListener(v -> {
+            selectPiece(piece);
+            if (selectedPiece != null) {
+                drawPossibleMoves(piece);
+            }
+        });
         return piece;
     }
 
     private void selectPiece(ImageView piece) {
         FrameLayout pieceParent = (FrameLayout) piece.getParent();
         if (selectedPiece != null) {
-            selectedPiece.removeViewAt(1);
+            FrameLayout selectedPiece = this.selectedPiece;
+            clearSelection();
             if (selectedPiece.equals(pieceParent)) {
-                selectedPiece = null;
                 return;
             }
         }
@@ -123,10 +136,65 @@ public class BoardView extends TableLayout {
         selectedPiece = pieceParent;
     }
 
+    private void clearSelection() {
+        selectedPiece.removeView(selectedPiece.findViewWithTag(SELECT_TAG));
+        possibleMoves.forEach(frameLayout -> frameLayout.removeView(frameLayout.findViewWithTag(MOVE_TAG)));
+        possibleMoves.clear();
+        selectedPiece = null;
+    }
+
     private View buildSelectView() {
         ImageView selectView = new ImageView(getContext());
         selectView.setImageResource(R.drawable.select_square);
         selectView.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        selectView.setTag(SELECT_TAG);
         return selectView;
+    }
+
+    private void drawPossibleMoves(ImageView piece) {
+        String currentPosition = getIdNameOfView((FrameLayout) piece.getParent());
+        ((ChessActivity) getContext()).getPossibleMoves(currentPosition)
+                .forEach(possibleMove -> drawMove(currentPosition, possibleMove));
+    }
+
+    private void drawMove(String currentPosition, String possibleMove) {
+        FrameLayout targetSquare = getSquareAtPosition(possibleMove);
+        ImageView possibleMoveImage = buildPossibleMoveView(isPieceExistAtPosition(possibleMove));
+        possibleMoveImage.setOnClickListener(v -> {
+            movePiece(currentPosition, possibleMove);
+            clearSelection();
+        });
+        targetSquare.addView(possibleMoveImage);
+        possibleMoves.add(targetSquare);
+    }
+
+    private boolean isPieceExistAtPosition(String position) {
+        return getSquareAtPosition(position).findViewWithTag("piece") != null;
+    }
+
+    @NonNull
+    private ImageView buildPossibleMoveView(boolean isPieceExistAtPosition) {
+        ImageView possibleMoveImage = new ImageView(getContext());
+        possibleMoveImage.setImageResource(isPieceExistAtPosition ? R.drawable.select_piece : R.drawable.select);
+        possibleMoveImage.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        possibleMoveImage.setTag(MOVE_TAG);
+        return possibleMoveImage;
+    }
+
+    private void movePiece(String startPosition, String endPosition) {
+        FrameLayout startSquare = getSquareAtPosition(startPosition);
+        FrameLayout endSquare = getSquareAtPosition(endPosition);
+
+        ImageView piece = startSquare.findViewWithTag(PIECE_TAG);
+        startSquare.removeView(piece);
+        endSquare.addView(piece);
+    }
+
+    public FrameLayout getSquareAtPosition(String position) {
+        return findViewById(getResources().getIdentifier(position, "id", getContext().getPackageName()));
+    }
+
+    private String getIdNameOfView(View view) {
+        return getContext().getResources().getResourceEntryName(view.getId());
     }
 }

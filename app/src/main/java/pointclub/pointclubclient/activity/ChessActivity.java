@@ -2,7 +2,9 @@ package pointclub.pointclubclient.activity;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+
+import java.util.List;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -47,12 +49,8 @@ public class ChessActivity extends AppCompatActivity {
             LogService.error(LogTag.CHESS, "Add Piece got Illegal Position: " + position);
             return;
         }
-        FrameLayout square = getSquareAtPosition(position);
+        FrameLayout square = board.getSquareAtPosition(position);
         square.addView(board.buildPieceView(pieceImage));
-    }
-
-    private FrameLayout getSquareAtPosition(String position) {
-        return board.findViewById(getResources().getIdentifier(position, "id", getPackageName()));
     }
 
     private boolean isPositionLegal(String position) {
@@ -94,5 +92,11 @@ public class ChessActivity extends AppCompatActivity {
         addPieceToBoard(PieceImage.BLACK_PAWN, "f7");
         addPieceToBoard(PieceImage.BLACK_PAWN, "g7");
         addPieceToBoard(PieceImage.BLACK_PAWN, "h7");
+    }
+
+    public List<String> getPossibleMoves(String currentPosition) {
+        int row = new Random().nextInt(8) + 1;
+        String pos = "d" + row;
+        return List.of(pos, "c3", "c7");
     }
 }
