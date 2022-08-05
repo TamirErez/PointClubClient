@@ -2,7 +2,7 @@ package pointclub.pointclubclient.chess.enums;
 
 import pointclub.pointclubclient.R;
 
-public enum PieceImage {
+public enum PieceType {
     BLACK_ROOK(R.drawable.black_rook),
     BLACK_BISHOP(R.drawable.black_bishop),
     BLACK_KNIGHT(R.drawable.black_knight),
@@ -18,7 +18,7 @@ public enum PieceImage {
 
     private final int value;
 
-    PieceImage(final int newValue) {
+    PieceType(final int newValue) {
         value = newValue;
     }
 

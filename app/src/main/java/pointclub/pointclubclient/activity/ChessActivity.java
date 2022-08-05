@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import pointclub.pointclubclient.R;
-import pointclub.pointclubclient.chess.enums.PieceImage;
+import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.service.ConstraintsService;
 import pointclub.pointclubclient.service.chess.BoardView;
 import pointclub.pointclubclient.service.log.LogService;
@@ -44,13 +44,13 @@ public class ChessActivity extends AppCompatActivity {
         constraintSet.applyTo(chessLayout);
     }
 
-    private void addPieceToBoard(PieceImage pieceImage, String position) {
+    private void addPieceToBoard(PieceType pieceType, String position) {
         if (!isPositionLegal(position)) {
             LogService.error(LogTag.CHESS, "Add Piece got Illegal Position: " + position);
             return;
         }
         FrameLayout square = board.getSquareAtPosition(position);
-        square.addView(board.buildPieceView(pieceImage));
+        square.addView(board.buildPieceView(pieceType));
     }
 
     private boolean isPositionLegal(String position) {
@@ -59,39 +59,39 @@ public class ChessActivity extends AppCompatActivity {
     }
 
     private void setupClassicBoard() {
-        addPieceToBoard(PieceImage.WHITE_ROOK, "a1");
-        addPieceToBoard(PieceImage.WHITE_KNIGHT, "b1");
-        addPieceToBoard(PieceImage.WHITE_BISHOP, "c1");
-        addPieceToBoard(PieceImage.WHITE_QUEEN, "d1");
-        addPieceToBoard(PieceImage.WHITE_KING, "e1");
-        addPieceToBoard(PieceImage.WHITE_BISHOP, "f1");
-        addPieceToBoard(PieceImage.WHITE_KNIGHT, "g1");
-        addPieceToBoard(PieceImage.WHITE_ROOK, "h1");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "a2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "b2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "c2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "d2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "e2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "f2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "g2");
-        addPieceToBoard(PieceImage.WHITE_PAWN, "h2");
+        addPieceToBoard(PieceType.WHITE_ROOK, "a1");
+        addPieceToBoard(PieceType.WHITE_KNIGHT, "b1");
+        addPieceToBoard(PieceType.WHITE_BISHOP, "c1");
+        addPieceToBoard(PieceType.WHITE_QUEEN, "d1");
+        addPieceToBoard(PieceType.WHITE_KING, "e1");
+        addPieceToBoard(PieceType.WHITE_BISHOP, "f1");
+        addPieceToBoard(PieceType.WHITE_KNIGHT, "g1");
+        addPieceToBoard(PieceType.WHITE_ROOK, "h1");
+        addPieceToBoard(PieceType.WHITE_PAWN, "a2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "b2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "c2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "d2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "e2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "f2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "g2");
+        addPieceToBoard(PieceType.WHITE_PAWN, "h2");
 
-        addPieceToBoard(PieceImage.BLACK_ROOK, "a8");
-        addPieceToBoard(PieceImage.BLACK_KNIGHT, "b8");
-        addPieceToBoard(PieceImage.BLACK_BISHOP, "c8");
-        addPieceToBoard(PieceImage.BLACK_QUEEN, "d8");
-        addPieceToBoard(PieceImage.BLACK_KING, "e8");
-        addPieceToBoard(PieceImage.BLACK_BISHOP, "f8");
-        addPieceToBoard(PieceImage.BLACK_KNIGHT, "g8");
-        addPieceToBoard(PieceImage.BLACK_ROOK, "h8");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "a7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "b7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "c7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "d7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "e7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "f7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "g7");
-        addPieceToBoard(PieceImage.BLACK_PAWN, "h7");
+        addPieceToBoard(PieceType.BLACK_ROOK, "a8");
+        addPieceToBoard(PieceType.BLACK_KNIGHT, "b8");
+        addPieceToBoard(PieceType.BLACK_BISHOP, "c8");
+        addPieceToBoard(PieceType.BLACK_QUEEN, "d8");
+        addPieceToBoard(PieceType.BLACK_KING, "e8");
+        addPieceToBoard(PieceType.BLACK_BISHOP, "f8");
+        addPieceToBoard(PieceType.BLACK_KNIGHT, "g8");
+        addPieceToBoard(PieceType.BLACK_ROOK, "h8");
+        addPieceToBoard(PieceType.BLACK_PAWN, "a7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "b7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "c7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "d7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "e7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "f7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "g7");
+        addPieceToBoard(PieceType.BLACK_PAWN, "h7");
     }
 
     public List<String> getPossibleMoves(String currentPosition) {
