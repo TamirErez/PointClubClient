@@ -1,10 +1,9 @@
-package pointclub.pointclubclient.service.chess;
+package pointclub.pointclubclient.view;
 
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -15,7 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.ChessActivity;
-import pointclub.pointclubclient.chess.enums.PieceImage;
+import pointclub.pointclubclient.chess.enums.PieceType;
 
 public class BoardView extends TableLayout {
 
@@ -23,8 +22,8 @@ public class BoardView extends TableLayout {
     public static final String MOVE_TAG = "move";
     public static final String PIECE_TAG = "piece";
     private final int squareLength;
-    private FrameLayout selectedPiece = null;
-    private List<FrameLayout> possibleMoves = new ArrayList<>();
+    private SquareView selectedSquare = null;
+    private List<SquareView> possibleMoves = new ArrayList<>();
 
     public BoardView(Context context) {
         super(context);
@@ -69,8 +68,8 @@ public class BoardView extends TableLayout {
     }
 
     private int positionToId(int rowIndex, int colIndex) {
-        String id = (char) ('a' + colIndex) + String.valueOf(rowIndex);
-        return getContext().getResources().getIdentifier(id, "id", getContext().getPackageName());
+        String squareName = (char) ('a' + colIndex) + String.valueOf(rowIndex);
+        return findIdByName(squareName);
     }
 
     private void addTwoSquares(TableRow row, View blackSquare, View whiteSquare) {
@@ -90,15 +89,14 @@ public class BoardView extends TableLayout {
 
     @NonNull
     private View createSquare(int drawableSquare, int id) {
-        FrameLayout frameLayout = new FrameLayout(getContext());
-        frameLayout.setId(id);
-        ImageView blackSquare = new ImageView(getContext());
+        SquareView squareView = new SquareView(getContext());
+        squareView.setId(id);
+        ImageView square = new ImageView(getContext());
+        square.setImageResource(drawableSquare);
+        square.setLayoutParams(new SquareView.LayoutParams(squareLength, squareLength, Gravity.CENTER));
+        squareView.addView(square);
 
-        blackSquare.setImageResource(drawableSquare);
-        blackSquare.setLayoutParams(new FrameLayout.LayoutParams(squareLength, squareLength, Gravity.CENTER));
-        frameLayout.addView(blackSquare);
-
-        return frameLayout;
+        return squareView;
     }
 
     private int getScreenWidth() {
@@ -109,14 +107,14 @@ public class BoardView extends TableLayout {
         return squareLength;
     }
 
-    public View buildPieceView(PieceImage pieceImage) {
+    public ImageView buildPieceView(PieceType pieceType) {
         ImageView piece = new ImageView(getContext());
-        piece.setImageResource(pieceImage.getValue());
-        piece.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
-        piece.setTag(PIECE_TAG);
+        piece.setImageResource(pieceType.getValue());
+        piece.setLayoutParams(new SquareView.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        piece.setTag(pieceType);
         piece.setOnClickListener(v -> {
             selectPiece(piece);
-            if (selectedPiece != null) {
+            if (selectedSquare != null) {
                 drawPossibleMoves(piece);
             }
         });
@@ -124,41 +122,41 @@ public class BoardView extends TableLayout {
     }
 
     private void selectPiece(ImageView piece) {
-        FrameLayout pieceParent = (FrameLayout) piece.getParent();
-        if (selectedPiece != null) {
-            FrameLayout selectedPiece = this.selectedPiece;
+        SquareView containingSquare = (SquareView) piece.getParent();
+        if (selectedSquare != null) {
+            SquareView selectedPiece = this.selectedSquare;
             clearSelection();
-            if (selectedPiece.equals(pieceParent)) {
+            if (selectedPiece.equals(containingSquare)) {
                 return;
             }
         }
-        pieceParent.addView(buildSelectView(), 1);
-        selectedPiece = pieceParent;
+        containingSquare.addView(buildSelectView(), 1);
+        selectedSquare = containingSquare;
     }
 
     private void clearSelection() {
-        selectedPiece.removeView(selectedPiece.findViewWithTag(SELECT_TAG));
-        possibleMoves.forEach(frameLayout -> frameLayout.removeView(frameLayout.findViewWithTag(MOVE_TAG)));
+        selectedSquare.removeView(selectedSquare.findViewWithTag(SELECT_TAG));
+        possibleMoves.forEach(squareView -> squareView.removeView(squareView.findViewWithTag(MOVE_TAG)));
         possibleMoves.clear();
-        selectedPiece = null;
+        selectedSquare = null;
     }
 
     private View buildSelectView() {
         ImageView selectView = new ImageView(getContext());
         selectView.setImageResource(R.drawable.select_square);
-        selectView.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        selectView.setLayoutParams(new SquareView.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
         selectView.setTag(SELECT_TAG);
         return selectView;
     }
 
     private void drawPossibleMoves(ImageView piece) {
-        String currentPosition = getIdNameOfView((FrameLayout) piece.getParent());
+        String currentPosition = getIdNameOfView((SquareView) piece.getParent());
         ((ChessActivity) getContext()).getPossibleMoves(currentPosition)
                 .forEach(possibleMove -> drawMove(currentPosition, possibleMove));
     }
 
     private void drawMove(String currentPosition, String possibleMove) {
-        FrameLayout targetSquare = getSquareAtPosition(possibleMove);
+        SquareView targetSquare = getSquareAtPosition(possibleMove);
         ImageView possibleMoveImage = buildPossibleMoveView(isPieceExistAtPosition(possibleMove));
         possibleMoveImage.setOnClickListener(v -> {
             movePiece(currentPosition, possibleMove);
@@ -176,26 +174,37 @@ public class BoardView extends TableLayout {
     private ImageView buildPossibleMoveView(boolean isPieceExistAtPosition) {
         ImageView possibleMoveImage = new ImageView(getContext());
         possibleMoveImage.setImageResource(isPieceExistAtPosition ? R.drawable.select_piece : R.drawable.select);
-        possibleMoveImage.setLayoutParams(new FrameLayout.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
+        possibleMoveImage.setLayoutParams(new SquareView.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
         possibleMoveImage.setTag(MOVE_TAG);
         return possibleMoveImage;
     }
 
     private void movePiece(String startPosition, String endPosition) {
-        FrameLayout startSquare = getSquareAtPosition(startPosition);
-        FrameLayout endSquare = getSquareAtPosition(endPosition);
+        SquareView startSquare = getSquareAtPosition(startPosition);
+        SquareView endSquare = getSquareAtPosition(endPosition);
 
-        ImageView piece = startSquare.findViewWithTag(PIECE_TAG);
-        startSquare.removeView(piece);
-        endSquare.removeView(endSquare.findViewWithTag(PIECE_TAG));
-        endSquare.addView(piece);
+        ImageView movingPiece = startSquare.removePiece();
+        endSquare.removePiece();
+        endSquare.addPiece(movingPiece);
     }
 
-    public FrameLayout getSquareAtPosition(String position) {
-        return findViewById(getResources().getIdentifier(position, "id", getContext().getPackageName()));
+    public SquareView getSquareAtPosition(String position) {
+        return findViewById(findIdByName(position));
+    }
+
+    private int findIdByName(String position) {
+        return getResources().getIdentifier(position, "id", getContext().getPackageName());
     }
 
     private String getIdNameOfView(View view) {
         return getContext().getResources().getResourceEntryName(view.getId());
+    }
+
+    public void showPromotionDialog(ImageView promotingPiece) {
+        SquareView containingSquare = (SquareView) promotingPiece.getParent();
+        PromotionDialog.showPromotionDialog(getContext(), promotingPiece, pieceType -> {
+            containingSquare.removePiece();
+            containingSquare.addPiece(buildPieceView(pieceType));
+        });
     }
 }

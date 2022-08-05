@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.service.ConstraintsService;
-import pointclub.pointclubclient.service.chess.BoardView;
+import pointclub.pointclubclient.view.BoardView;
 import pointclub.pointclubclient.service.log.LogService;
 import pointclub.pointclubclient.service.log.LogTag;
 
