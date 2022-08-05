@@ -167,7 +167,7 @@ public class BoardView extends TableLayout {
     }
 
     private boolean isPieceExistAtPosition(String position) {
-        return getSquareAtPosition(position).findViewWithTag("piece") != null;
+        return getSquareAtPosition(position).getPiece() != null;
     }
 
     @NonNull
