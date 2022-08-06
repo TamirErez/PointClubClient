@@ -20,7 +20,6 @@ public class BoardView extends TableLayout {
 
     public static final String SELECT_TAG = "select";
     public static final String MOVE_TAG = "move";
-    public static final String PIECE_TAG = "piece";
     private final int squareLength;
     private SquareView selectedSquare = null;
     private List<SquareView> possibleMoves = new ArrayList<>();
