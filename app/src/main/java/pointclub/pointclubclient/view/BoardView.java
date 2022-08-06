@@ -10,11 +10,15 @@ import android.widget.TableRow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.ChessActivity;
+import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
+import pointclub.pointclubclient.service.log.LogService;
+import pointclub.pointclubclient.service.log.LogTag;
 
 public class BoardView extends TableLayout {
 
@@ -23,11 +27,20 @@ public class BoardView extends TableLayout {
     private final int squareLength;
     private SquareView selectedSquare = null;
     private List<SquareView> possibleMoves = new ArrayList<>();
+    private Colour playerColour;
 
     public BoardView(Context context) {
+        this(context, Colour.WHITE);
+    }
+
+    public BoardView(Context context, Colour playerColour) {
         super(context);
+        this.playerColour = playerColour;
         squareLength = getScreenWidth() / 8;
         buildBoard();
+        if (playerColour.equals(Colour.BLACK)) {
+            flipBoard();
+        }
     }
 
     public void buildBoard() {
@@ -56,6 +69,7 @@ public class BoardView extends TableLayout {
         TableRow row = new TableRow(getContext());
         row.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         row.setGravity(Gravity.CENTER);
+        row.setId(findIdByName("row" + (rowIndex + 1)));
         for (int colIndex = 0; colIndex < 4; colIndex++) {
             int firstPosition = positionToId(rowIndex + 1, colIndex * 2);
             int secondPosition = positionToId(rowIndex + 1, colIndex * 2 + 1);
@@ -111,13 +125,18 @@ public class BoardView extends TableLayout {
         piece.setImageResource(pieceType.getValue());
         piece.setLayoutParams(new SquareView.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
         piece.setTag(pieceType);
+        setPieceMovement(piece);
+        return piece;
+    }
+
+    private void setPieceMovement(ImageView piece) {
+        if (!Objects.equals(getPieceColour(piece), playerColour)) return;
         piece.setOnClickListener(v -> {
             selectPiece(piece);
             if (selectedSquare != null) {
                 drawPossibleMoves(piece);
             }
         });
-        return piece;
     }
 
     private void selectPiece(ImageView piece) {
@@ -188,15 +207,23 @@ public class BoardView extends TableLayout {
     }
 
     public SquareView getSquareAtPosition(String position) {
-        return findViewById(findIdByName(position));
+        return findViewByName(position);
     }
 
-    private int findIdByName(String position) {
-        return getResources().getIdentifier(position, "id", getContext().getPackageName());
+    private int findIdByName(String name) {
+        return getResources().getIdentifier(name, "id", getContext().getPackageName());
     }
 
     private String getIdNameOfView(View view) {
         return getContext().getResources().getResourceEntryName(view.getId());
+    }
+
+    private void flipBoard() {
+        for (int i = 1; i <= 8; i++) {
+            TableRow row = findViewByName("row" + i);
+            removeView(row);
+            addView(row);
+        }
     }
 
     public void showPromotionDialog(ImageView promotingPiece) {
@@ -205,5 +232,22 @@ public class BoardView extends TableLayout {
             containingSquare.removePiece();
             containingSquare.addPiece(buildPieceView(pieceType));
         });
+    }
+
+    private <T extends View> T findViewByName(String name) {
+        return findViewById(findIdByName(name));
+    }
+
+    public static Colour getPieceColour(ImageView piece) {
+        if (((PieceType) piece.getTag()).name().contains("BLACK"))
+            return Colour.BLACK;
+        if (((PieceType) piece.getTag()).name().contains("WHITE"))
+            return Colour.WHITE;
+        LogService.error(LogTag.CHESS, "Couldn't find colour for piece");
+        return null;
+    }
+
+    public static boolean isPieceBlack(ImageView piece) {
+        return Objects.equals(getPieceColour(piece), Colour.BLACK);
     }
 }

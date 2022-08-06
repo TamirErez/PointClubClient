@@ -1,7 +1,6 @@
 package pointclub.pointclubclient.activity;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import java.util.List;
 import java.util.Random;
@@ -10,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.view.BoardView;
+import pointclub.pointclubclient.view.SquareView;
+import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.service.ConstraintsService;
-import pointclub.pointclubclient.view.BoardView;
 import pointclub.pointclubclient.service.log.LogService;
 import pointclub.pointclubclient.service.log.LogTag;
 
@@ -26,14 +27,15 @@ public class ChessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess);
 
-        initFields();
+        Colour player = (Colour) getIntent().getSerializableExtra("player");
+        initFields(player);
         addBoardToCenter();
         setupClassicBoard();
     }
 
-    private void initFields() {
+    private void initFields(Colour player) {
         chessLayout = findViewById(R.id.chess_layout);
-        board = new BoardView(this);
+        board = new BoardView(this, player);
     }
 
     private void addBoardToCenter() {
@@ -49,8 +51,8 @@ public class ChessActivity extends AppCompatActivity {
             LogService.error(LogTag.CHESS, "Add Piece got Illegal Position: " + position);
             return;
         }
-        FrameLayout square = board.getSquareAtPosition(position);
-        square.addView(board.buildPieceView(pieceType));
+        SquareView square = board.getSquareAtPosition(position);
+        square.addPiece(board.buildPieceView(pieceType));
     }
 
     private boolean isPositionLegal(String position) {

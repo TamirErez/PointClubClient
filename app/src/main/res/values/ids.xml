@@ -71,4 +71,13 @@
     <item name="h6" type="id"/>
     <item name="h7" type="id"/>
     <item name="h8" type="id"/>
+
+    <item name="row1" type="id"/>
+    <item name="row2" type="id"/>
+    <item name="row3" type="id"/>
+    <item name="row4" type="id"/>
+    <item name="row5" type="id"/>
+    <item name="row6" type="id"/>
+    <item name="row7" type="id"/>
+    <item name="row8" type="id"/>
 </resources>

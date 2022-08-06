@@ -29,7 +29,7 @@ public class PromotionDialog {
     }
 
     private static void setPromotePieceColor(ImageView promotingPiece, ImageView queen, ImageView knight, ImageView bishop, ImageView rook) {
-        if (isPieceBlack(promotingPiece)) {
+        if (BoardView.isPieceBlack(promotingPiece)) {
             queen.setImageResource(R.drawable.black_queen);
             queen.setTag(PieceType.BLACK_QUEEN);
             bishop.setImageResource(R.drawable.black_bishop);
@@ -46,10 +46,6 @@ public class PromotionDialog {
         ImageView image = containingView.findViewById(id);
         image.setTag(tag);
         return image;
-    }
-
-    private static boolean isPieceBlack(ImageView promotingPiece) {
-        return ((PieceType) promotingPiece.getTag()).name().contains("BLACK");
     }
 
     private static void setPromotionAction(SquareView containingSquare, View promotionDialog, PopupWindow popupWindow, Callable callback) {
