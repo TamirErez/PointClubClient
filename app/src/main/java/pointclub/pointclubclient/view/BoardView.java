@@ -22,12 +22,12 @@ import pointclub.pointclubclient.service.log.LogTag;
 
 public class BoardView extends TableLayout {
 
-    public static final String SELECT_TAG = "select";
-    public static final String MOVE_TAG = "move";
+    private static final String SELECT_TAG = "select";
+    private static final String MOVE_TAG = "move";
     private final int squareLength;
     private SquareView selectedSquare = null;
-    private List<SquareView> possibleMoves = new ArrayList<>();
-    private Colour playerColour;
+    private final List<SquareView> possibleMoves = new ArrayList<>();
+    private final Colour playerColour;
 
     public BoardView(Context context) {
         this(context, Colour.WHITE);
