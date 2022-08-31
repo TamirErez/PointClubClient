@@ -34,12 +34,12 @@ public class Board {
         pieces.clear();
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                squares[row][column] = new Square(getSquareColorByPosition(new Position(row, column)));
+                squares[row][column] = new Square(getSquareInitialColor(new Position(row, column)));
             }
         }
     }
 
-    private Colour getSquareColorByPosition(Position position) {
+    private Colour getSquareInitialColor(Position position) {
         return isPositionEven(position) ? firstSquareColour : Colour.getOppositeColor(firstSquareColour);
     }
 
