@@ -8,6 +8,7 @@ import lombok.Getter;
 import pointclub.pointclubclient.chess.GameState;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.Direction;
+import pointclub.pointclubclient.chess.enums.MoveType;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
@@ -43,23 +44,30 @@ public abstract class AbstractPiece {
      * @return Position that continues the movement in the given direction
      */
     Position addMoveToPosition(GameState gameState, Position targetPosition, Direction... movingDirection) {
+        return addMoveToPosition(gameState, targetPosition, MoveType.MOVE_AND_CAPTURE, movingDirection);
+    }
+
+    /**
+     * @return Position that continues the movement in the given direction
+     */
+    Position addMoveToPosition(GameState gameState, Position targetPosition, MoveType moveType, Direction... movingDirection) {
         if (targetPosition == null || !gameState.isPositionLegal(targetPosition)) {
             return Position.EMPTY_POSITION;
         }
 
         AbstractPiece pieceOnTargetPosition = gameState.getSquareByPosition(targetPosition).getPiece();
         if (pieceOnTargetPosition.pieceType != PieceType.NONE) {
-            return addCaptureMove(gameState, targetPosition, pieceOnTargetPosition);
+            return addCaptureMove(gameState, targetPosition, pieceOnTargetPosition, moveType);
         } else {
-            movesList.add(new Move(getPosition(gameState), targetPosition, this));
+            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType));
             targetPosition = targetPosition.transform(movingDirection);
             return targetPosition;
         }
     }
 
-    private Position addCaptureMove(GameState gameState, Position targetPosition, AbstractPiece piece) {
+    private Position addCaptureMove(GameState gameState, Position targetPosition, AbstractPiece piece, MoveType moveType) {
         if (piece.colour != colour) {
-            movesList.add(new Move(getPosition(gameState), targetPosition, this));
+            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType));
         }
         return null;
     }
