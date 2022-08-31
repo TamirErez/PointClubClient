@@ -95,7 +95,7 @@ public class Board {
             boardString.append(row + 1).append(" ");
             for (int column = 0; column < columns; column++) {
                 Square square = squares[row][column];
-                boardString.append(square.getPiece().getAsciiName());
+                boardString.append(square);
                 boardString.append("|");
             }
             boardString.append("\n");
