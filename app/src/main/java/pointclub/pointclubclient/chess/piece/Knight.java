@@ -18,7 +18,7 @@ public class Knight extends AbstractPiece {
     }
 
     @Override
-    public List<Move> getPossibleMoves(GameState gameState) {
+    public List<Move> getThreateningMoves(GameState gameState) {
         movesList = new ArrayList<>();
 
         addMoveToPosition(gameState, getPosition(gameState).transform(Direction.UP, Direction.UP, Direction.RIGHT));

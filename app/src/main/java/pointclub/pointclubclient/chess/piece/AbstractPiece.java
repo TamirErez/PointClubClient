@@ -26,7 +26,7 @@ public abstract class AbstractPiece {
         this.colour = colour;
     }
 
-    public abstract List<Move> getPossibleMoves(GameState gameState);
+    public abstract List<Move> getThreateningMoves(GameState gameState);
 
     public abstract String getAsciiName();
 
@@ -38,7 +38,7 @@ public abstract class AbstractPiece {
      * @return Position that continues the movement in the given direction
      */
     Position addMoveToPosition(GameState gameState, Position targetPosition, Direction... movingDirection) {
-        if (!gameState.isPositionLegal(targetPosition)) {
+        if (targetPosition == null || !gameState.isPositionLegal(targetPosition)) {
             return Position.EMPTY_POSITION;
         }
 

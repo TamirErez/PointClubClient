@@ -18,7 +18,7 @@ public class Queen extends AbstractPiece {
     }
 
     @Override
-    public List<Move> getPossibleMoves(GameState gameState) {
+    public List<Move> getThreateningMoves(GameState gameState) {
         movesList = new ArrayList<>();
 
         Position downRightPosition = getPosition(gameState).transform(Direction.DOWN, Direction.RIGHT);

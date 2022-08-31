@@ -16,7 +16,7 @@ public class EmptyPiece extends AbstractPiece {
     }
 
     @Override
-    public List<Move> getPossibleMoves(GameState gameState) {
+    public List<Move> getThreateningMoves(GameState gameState) {
         return List.of();
     }
 
