@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,18 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getRoomMessages() {
         messageList = room.getMessages();
+        cleanupMessages();
+    }
+
+    private void cleanupMessages() {
+        List<Message> badMessages = new ArrayList<>();
+        messageList.forEach(message -> {
+            if(message.getRoom() == null || message.getSender() == null){
+                badMessages.add(message);
+            }
+        });
+        messageList.removeAll(badMessages);
+        badMessages.forEach(Message::delete);
     }
 
     private void setupMessageRecycler() {
