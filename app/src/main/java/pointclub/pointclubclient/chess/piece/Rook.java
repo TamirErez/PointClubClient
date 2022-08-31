@@ -23,7 +23,7 @@ public class Rook extends AbstractPiece {
     }
 
     @Override
-    public List<Move> getThreateningMoves(GameState gameState) {
+    public List<Move> getPossibleMoves(GameState gameState) {
         movesList = new ArrayList<>();
 
         Position upPosition = getPosition(gameState).transform(Direction.UP);
