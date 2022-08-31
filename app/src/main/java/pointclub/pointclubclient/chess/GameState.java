@@ -6,6 +6,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import lombok.Data;
 import pointclub.pointclubclient.chess.board.Board;
+import pointclub.pointclubclient.chess.board.Square;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
@@ -37,8 +38,8 @@ public class GameState {
         return board.isPositionLegal(position);
     }
 
-    public AbstractPiece getPieceByPosition(Position position) {
-        return board.getPieceByPosition(position);
+    public Square getSquareByPosition(Position position) {
+        return board.getSquareByPosition(position);
     }
 
     public Position getPositionOfPiece(AbstractPiece piece) {

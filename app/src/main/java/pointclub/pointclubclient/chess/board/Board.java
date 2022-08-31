@@ -56,10 +56,6 @@ public class Board {
         return squares[position.getRow()][position.getColumn()];
     }
 
-    public AbstractPiece getPieceByPosition(Position position) {
-        return getSquares()[position.getRow()][position.getColumn()].getPiece();
-    }
-
     public Position getPositionOfPiece(AbstractPiece piece) {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {

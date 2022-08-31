@@ -42,7 +42,7 @@ public abstract class AbstractPiece {
             return Position.EMPTY_POSITION;
         }
 
-        AbstractPiece pieceOnTargetPosition = gameState.getPieceByPosition(targetPosition);
+        AbstractPiece pieceOnTargetPosition = gameState.getSquareByPosition(targetPosition).getPiece();
         if (pieceOnTargetPosition.pieceType != PieceType.NONE) {
             return addCaptureMove(gameState, targetPosition, pieceOnTargetPosition);
         } else {
