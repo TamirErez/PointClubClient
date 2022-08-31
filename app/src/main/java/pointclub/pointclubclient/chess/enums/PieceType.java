@@ -7,7 +7,8 @@ public enum PieceType {
     ROOK("Rook"),
     BISHOP("BISHOP"),
     KING("KING"),
-    KNIGHT("KNIGHT");
+    KNIGHT("KNIGHT"),
+    QUEEN("QUEEN");
 
     @Getter
     private final String name;
