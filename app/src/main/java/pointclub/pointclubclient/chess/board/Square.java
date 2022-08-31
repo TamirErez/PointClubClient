@@ -11,7 +11,7 @@ public class Square {
     private Colour colour;
 
     public Square(Colour colour) {
-        this(new EmptyPiece(colour), colour);
+        this(EmptyPiece.getInstance(), colour);
     }
 
     public Square(AbstractPiece piece, Colour colour) {

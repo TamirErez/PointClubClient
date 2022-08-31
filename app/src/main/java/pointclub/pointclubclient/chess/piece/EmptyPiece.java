@@ -10,7 +10,16 @@ import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
 
 public class EmptyPiece extends AbstractPiece {
-    public EmptyPiece(Colour colour) {
+    private static EmptyPiece instance;
+
+    public static EmptyPiece getInstance() {
+        if (instance == null) {
+            instance = new EmptyPiece(Colour.WHITE);
+        }
+        return instance;
+    }
+
+    private EmptyPiece(Colour colour) {
         super(colour, Position.EMPTY_POSITION);
         this.pieceType = PieceType.NONE;
         this.value = 0;
