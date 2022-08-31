@@ -68,8 +68,8 @@ public class Board {
     }
 
     public boolean isPositionLegal(Position position) {
-        return position.getColumn() > 0 && position.getColumn() < getColumns() &&
-                position.getRow() > 0 && position.getRow() < getRows();
+        return position.getColumn() >= 0 && position.getColumn() < getColumns() &&
+                position.getRow() >= 0 && position.getRow() < getRows();
     }
 
     @NonNull

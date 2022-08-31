@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public enum PieceType {
     NONE("None"),
-    ROOK("Rook");
+    ROOK("Rook"),
+    BISHOP("BISHOP");
 
     @Getter
     private final String name;
