@@ -30,6 +30,23 @@ public class Board {
         cleanBoard();
     }
 
+    public Board(Board board) {
+        this.columns = board.columns;
+        this.rows = board.rows;
+        this.firstSquareColour = board.firstSquareColour;
+        squares = new Square[rows][columns];
+        cleanBoard();
+        copyPieces(board);
+    }
+
+    private void copyPieces(Board board) {
+        for (int i = 0; i < board.squares.length; i++) {
+            for (int j = 0; j < board.squares[i].length; j++){
+                this.squares[i][j].setPiece(board.squares[i][j].getPiece());
+            }
+        }
+    }
+
     private void cleanBoard() {
         pieces.clear();
         for (int row = 0; row < rows; row++) {
@@ -87,5 +104,17 @@ public class Board {
         }
 
         return boardString.append("  a  b  c  d  e  f  g  h").toString();
+    }
+
+    public AbstractPiece removePieceFromPosition(Position position) {
+        return getSquareByPosition(position).removePiece();
+    }
+
+    public void movePieceToPosition(AbstractPiece piece, Position position) {
+        getSquareByPosition(position).setPiece(piece);
+    }
+
+    public List<AbstractPiece> getPieces() {
+        return Arrays.stream(squares).flatMap(row -> Arrays.stream(row).map(Square::getPiece)).collect(Collectors.toList());
     }
 }

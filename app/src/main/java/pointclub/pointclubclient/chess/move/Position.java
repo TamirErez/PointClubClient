@@ -63,4 +63,11 @@ public class Position {
     public String toString() {
         return translateColumnToLetter(column) + String.valueOf(row + 1);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Position &&
+                (row == ((Position) other).row) &&
+                (column == ((Position) other).column);
+    }
 }

@@ -3,6 +3,7 @@ package pointclub.pointclubclient.chess.piece;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import pointclub.pointclubclient.chess.GameState;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.Direction;
@@ -49,5 +50,11 @@ public class Queen extends AbstractPiece {
     @Override
     public String getAsciiName() {
         return colour == Colour.WHITE ? "♕" : "♛";
+    }
+
+    @NonNull
+    @Override
+    public AbstractPiece clone() {
+        return new Queen(colour, startingPosition);
     }
 }

@@ -18,6 +18,7 @@ public abstract class AbstractPiece {
     @Getter
     Position startingPosition;
     int value;
+    @Getter
     Colour colour;
     List<Move> movesList = new ArrayList<>();
 
@@ -29,6 +30,10 @@ public abstract class AbstractPiece {
     public abstract List<Move> getThreateningMoves(GameState gameState);
 
     public abstract String getAsciiName();
+
+    @NonNull
+    @Override
+    public abstract AbstractPiece clone();
 
     protected Position getPosition(GameState gameState) {
         return gameState.getPositionOfPiece(this);

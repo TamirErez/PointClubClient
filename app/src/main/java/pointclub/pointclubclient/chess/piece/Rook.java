@@ -3,7 +3,9 @@ package pointclub.pointclubclient.chess.piece;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import pointclub.pointclubclient.chess.GameState;
+import lombok.Setter;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.Direction;
 import pointclub.pointclubclient.chess.enums.PieceType;
@@ -11,6 +13,9 @@ import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
 
 public class Rook extends AbstractPiece {
+    @Setter
+    private boolean hasMoved = false;
+
     public Rook(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
         this.pieceType = PieceType.ROOK;
@@ -39,5 +44,13 @@ public class Rook extends AbstractPiece {
     @Override
     public String getAsciiName() {
         return colour == Colour.WHITE ? "♖" : "♜";
+    }
+
+    @NonNull
+    @Override
+    public AbstractPiece clone() {
+        Rook clone = new Rook(colour, startingPosition);
+        clone.hasMoved = hasMoved;
+        return clone;
     }
 }
