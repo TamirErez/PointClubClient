@@ -3,8 +3,8 @@ package pointclub.pointclubclient.chess.enums;
 import lombok.Getter;
 
 public enum PieceType {
-    NONE("None"),
-    ROOK("Rook"),
+    NONE("NONE"),
+    ROOK("ROOK"),
     BISHOP("BISHOP"),
     KING("KING"),
     KNIGHT("KNIGHT"),
