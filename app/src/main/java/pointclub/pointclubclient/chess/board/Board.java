@@ -1,7 +1,8 @@
 package pointclub.pointclubclient.chess.board;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import lombok.Data;
@@ -15,7 +16,6 @@ public class Board {
     private int columns;
     private int rows;
     private final Square[][] squares;
-    private List<AbstractPiece> pieces = new ArrayList<>();
     private Colour firstSquareColour;
 
     public Board(int columns, int rows) {
@@ -48,7 +48,6 @@ public class Board {
     }
 
     private void cleanBoard() {
-        pieces.clear();
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 squares[row][column] = new Square(getSquareInitialColor(new Position(row, column)));
@@ -64,8 +63,7 @@ public class Board {
         return (position.getColumn() + position.getRow()) % 2 == 0;
     }
 
-    public void addPiece(AbstractPiece piece) {
-        pieces.add(piece);
+    public void addNewPiece(AbstractPiece piece) {
         getSquareByPosition(piece.getStartingPosition()).setPiece(piece);
     }
 
