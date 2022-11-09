@@ -1,6 +1,8 @@
 package pointclub.pointclubclient.chess.enums;
 
-public enum Colour {
+import java.io.Serializable;
+
+public enum Colour implements Serializable {
    WHITE, BLACK;
 
    public static Colour getOppositeColor(Colour colour) {

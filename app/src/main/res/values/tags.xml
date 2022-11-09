@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="piece" />
+    <item type="id" name="BLACK_ROOK" />
+    <item type="id" name="BLACK_BISHOP" />
+    <item type="id" name="BLACK_KNIGHT" />
+    <item type="id" name="BLACK_QUEEN" />
+    <item type="id" name="BLACK_PAWN" />
+    <item type="id" name="BLACK_KING" />
+    <item type="id" name="WHITE_ROOK" />
+    <item type="id" name="WHITE_BISHOP" />
+    <item type="id" name="WHITE_KNIGHT" />
+    <item type="id" name="WHITE_QUEEN" />
+    <item type="id" name="WHITE_PAWN" />
+    <item type="id" name="WHITE_KING" />
+</resources>
