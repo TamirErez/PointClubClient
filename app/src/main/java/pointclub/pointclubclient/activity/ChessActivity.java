@@ -65,8 +65,8 @@ public class ChessActivity extends AppCompatActivity {
 
     public void setupBoard() {
         board.clearBoard();
-        gameState.getBoard().getPieces().forEach(abstractPiece ->
-                addPieceToBoard(abstractPiece.getPieceType(), abstractPiece.getStartingPosition().toString()));
+        gameState.getBoard().getPieces().forEach(piece ->
+                addPieceToBoard(piece.getPieceType(), gameState.getPositionOfPiece(piece).toString()));
     }
 
     public List<Move> getPossibleMoves(String currentPosition) {
