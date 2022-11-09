@@ -13,6 +13,12 @@ public class Move {
     Position end;
     AbstractPiece movingPiece;
     MoveType moveType;
+    boolean isPromotion;
+    AbstractPiece promotedPiece;
+
+    public Move(Position start, Position end, AbstractPiece movingPiece, MoveType moveType, boolean isPromotion) {
+        this(start, end, movingPiece, moveType, isPromotion, null);
+    }
 
     @NonNull
     @Override
