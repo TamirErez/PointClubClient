@@ -17,8 +17,11 @@ import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.ChessActivity;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
+import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.service.log.LogService;
 import pointclub.pointclubclient.service.log.LogTag;
+
+import pointclub.pointclubclient.view.PromotionDialog.Callable;
 
 public class BoardView extends TableLayout {
 
@@ -170,16 +173,21 @@ public class BoardView extends TableLayout {
     private void drawPossibleMoves(ImageView piece) {
         String currentPosition = getIdNameOfView((SquareView) piece.getParent());
         ((ChessActivity) getContext()).getPossibleMoves(currentPosition)
-                .forEach(possibleMove -> drawMove(currentPosition, possibleMove));
+                .forEach(this::drawMove);
     }
 
-    private void drawMove(String currentPosition, String possibleMove) {
-        SquareView targetSquare = getSquareAtPosition(possibleMove);
-        boolean isCapture = isPieceExistAtPosition(possibleMove);
+    private void drawMove(Move move) {
+        SquareView targetSquare = getSquareAtPosition(move.getEnd().toString());
+        boolean isCapture = isPieceExistAtPosition(move.getEnd().toString());
         ImageView possibleMoveImage = buildPossibleMoveView(isCapture);
         possibleMoveImage.setOnClickListener(v -> {
-            movePiece(currentPosition, possibleMove);
-            ((ChessActivity) getContext()).movePiece(currentPosition, possibleMove, isCapture);
+            if (move.isPromotion()) {
+                showPromotionDialog(selectedSquare.getPiece(),
+                        pieceType -> ((ChessActivity) getContext()).movePiece(move, pieceType));
+            }
+            else {
+                ((ChessActivity) getContext()).movePiece(move);
+            }
             clearSelection();
         });
         targetSquare.addView(possibleMoveImage);
@@ -197,15 +205,6 @@ public class BoardView extends TableLayout {
         possibleMoveImage.setLayoutParams(new SquareView.LayoutParams(getSquareLength(), getSquareLength(), Gravity.CENTER));
         possibleMoveImage.setTag(MOVE_TAG);
         return possibleMoveImage;
-    }
-
-    private void movePiece(String startPosition, String endPosition) {
-        SquareView startSquare = getSquareAtPosition(startPosition);
-        SquareView endSquare = getSquareAtPosition(endPosition);
-
-        ImageView movingPiece = startSquare.removePiece();
-        endSquare.removePiece();
-        endSquare.addPiece(movingPiece);
     }
 
     public SquareView getSquareAtPosition(String position) {
@@ -228,11 +227,12 @@ public class BoardView extends TableLayout {
         }
     }
 
-    public void showPromotionDialog(ImageView promotingPiece) {
+    public void showPromotionDialog(ImageView promotingPiece, Callable callback) {
         SquareView containingSquare = (SquareView) promotingPiece.getParent();
         PromotionDialog.showPromotionDialog(getContext(), promotingPiece, pieceType -> {
             containingSquare.removePiece();
             containingSquare.addPiece(buildPieceView(pieceType));
+            callback.call(pieceType);
         });
     }
 

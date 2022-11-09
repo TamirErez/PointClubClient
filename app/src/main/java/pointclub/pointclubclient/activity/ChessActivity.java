@@ -3,15 +3,12 @@ package pointclub.pointclubclient.activity;
 import android.os.Bundle;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.chess.GameState;
 import pointclub.pointclubclient.chess.enums.Colour;
-import pointclub.pointclubclient.chess.enums.MoveType;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
@@ -72,18 +69,18 @@ public class ChessActivity extends AppCompatActivity {
                 addPieceToBoard(abstractPiece.getPieceType(), abstractPiece.getStartingPosition().toString()));
     }
 
-    public List<String> getPossibleMoves(String currentPosition) {
-        List<Move> possibleMoves = gameState.getSquareByPosition(new Position(currentPosition)).getPiece().getPossibleMoves(gameState);
-        return possibleMoves.stream()
-                .map(move -> move.getEnd().toString())
-                .collect(Collectors.toList());
+    public List<Move> getPossibleMoves(String currentPosition) {
+        return gameState.getSquareByPosition(new Position(currentPosition)).getPiece().getPossibleMoves(gameState);
 
     }
 
-    public void movePiece(String startPosition, String endPosition, boolean isCapture) {
-        Position piecePosition = new Position(startPosition);
-        gameState.move(new Move(piecePosition, new Position(endPosition),
-                gameState.getPieceAtPosition(piecePosition),
-                isCapture ? MoveType.CAPTURE_ONLY : MoveType.MOVE_ONLY));
+    public void movePiece(Move move) {
+        gameState.move(move);
+        setupBoard();
+    }
+
+    public void movePiece(Move move, PieceType promotedPiece) {
+        gameState.move(move, promotedPiece);
+        setupBoard();
     }
 }
