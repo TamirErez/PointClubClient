@@ -41,7 +41,7 @@ public class Board {
 
     private void copyPieces(Board board) {
         for (int i = 0; i < board.squares.length; i++) {
-            for (int j = 0; j < board.squares[i].length; j++){
+            for (int j = 0; j < board.squares[i].length; j++) {
                 this.squares[i][j].setPiece(board.squares[i][j].getPiece());
             }
         }
@@ -113,6 +113,9 @@ public class Board {
     }
 
     public List<AbstractPiece> getPieces() {
-        return Arrays.stream(squares).flatMap(row -> Arrays.stream(row).map(Square::getPiece)).collect(Collectors.toList());
+        return Arrays.stream(squares)
+                .flatMap(row -> Arrays.stream(row).map(Square::getPiece))
+                .filter(abstractPiece -> !abstractPiece.getPieceType().isNone())
+                .collect(Collectors.toList());
     }
 }
