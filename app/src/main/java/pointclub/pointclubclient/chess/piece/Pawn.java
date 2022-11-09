@@ -23,7 +23,6 @@ public class Pawn extends AbstractPiece {
     public List<Move> getPossibleMoves(GameState gameState) {
         movesList = new ArrayList<>();
 
-
         addMoveToPosition(gameState, getPosition(gameState).transform(Direction.UP), MoveType.MOVE_ONLY);
         addMoveToPosition(gameState, getPosition(gameState).transform(Direction.UP, Direction.RIGHT), MoveType.CAPTURE_ONLY);
         addMoveToPosition(gameState, getPosition(gameState).transform(Direction.UP, Direction.LEFT), MoveType.CAPTURE_ONLY);
