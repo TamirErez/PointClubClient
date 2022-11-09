@@ -38,9 +38,6 @@ public class BoardView extends TableLayout {
         this.playerColour = playerColour;
         squareLength = getScreenWidth() / 8;
         buildBoard();
-        if (playerColour.equals(Colour.BLACK)) {
-            flipBoard();
-        }
     }
 
     public void buildBoard() {
@@ -48,6 +45,9 @@ public class BoardView extends TableLayout {
         setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         for (int rowIndex = 0; rowIndex < 4; rowIndex++) {
             addTwoRows(createRowBlackStart(rowIndex * 2), createRowWhiteStart(rowIndex * 2 + 1));
+        }
+        if (playerColour.equals(Colour.BLACK)) {
+            flipBoard();
         }
     }
 
@@ -175,9 +175,11 @@ public class BoardView extends TableLayout {
 
     private void drawMove(String currentPosition, String possibleMove) {
         SquareView targetSquare = getSquareAtPosition(possibleMove);
-        ImageView possibleMoveImage = buildPossibleMoveView(isPieceExistAtPosition(possibleMove));
+        boolean isCapture = isPieceExistAtPosition(possibleMove);
+        ImageView possibleMoveImage = buildPossibleMoveView(isCapture);
         possibleMoveImage.setOnClickListener(v -> {
             movePiece(currentPosition, possibleMove);
+            ((ChessActivity) getContext()).movePiece(currentPosition, possibleMove, isCapture);
             clearSelection();
         });
         targetSquare.addView(possibleMoveImage);
@@ -249,5 +251,10 @@ public class BoardView extends TableLayout {
 
     public static boolean isPieceBlack(ImageView piece) {
         return Objects.equals(getPieceColour(piece), Colour.BLACK);
+    }
+
+    public void clearBoard() {
+        removeAllViews();
+        buildBoard();
     }
 }
