@@ -59,8 +59,8 @@ public class Position {
         column++;
     }
 
-    private char translateColumnToLetter(int row) {
-        return (char) ('a' + row);
+    private char translateColumnToLetter(int column) {
+        return (char) ('a' + column);
     }
 
     @NonNull
