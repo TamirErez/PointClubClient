@@ -17,6 +17,7 @@ import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
 import pointclub.pointclubclient.chess.piece.AbstractPiece;
 import pointclub.pointclubclient.chess.piece.Bishop;
+import pointclub.pointclubclient.chess.piece.EmptyPiece;
 import pointclub.pointclubclient.chess.piece.King;
 import pointclub.pointclubclient.chess.piece.Knight;
 import pointclub.pointclubclient.chess.piece.Pawn;
@@ -56,6 +57,39 @@ public class GameState {
         board.movePieceToPosition(board.removePieceFromPosition(move.getStart()), move.getEnd());
         setHasPieceMoved(move);
         updateThreats();
+    }
+
+    public void move(Move move, PieceType promotedPiece) {
+        move(move);
+        board.removePieceFromPosition(move.getEnd());
+        board.addNewPiece(promotePiece(move, promotedPiece));
+        moves.add(move);
+    }
+
+    private AbstractPiece promotePiece(Move move, PieceType promotedPiece) {
+        switch (promotedPiece) {
+            case BLACK_BISHOP:
+            case WHITE_BISHOP:
+                Bishop bishop = new Bishop(currentPlayer, move.getEnd());
+                move.setPromotedPiece(bishop);
+                return bishop;
+            case BLACK_ROOK:
+            case WHITE_ROOK:
+                Rook rook = new Rook(currentPlayer, move.getEnd());
+                move.setPromotedPiece(rook);
+                return rook;
+            case BLACK_KNIGHT:
+            case WHITE_KNIGHT:
+                Knight knight = new Knight(currentPlayer, move.getEnd());
+                move.setPromotedPiece(knight);
+                return knight;
+            case BLACK_QUEEN:
+            case WHITE_QUEEN:
+                Queen queen = new Queen(currentPlayer, move.getEnd());
+                move.setPromotedPiece(queen);
+                return queen;
+        }
+        return EmptyPiece.getInstance();
     }
 
     private void setHasPieceMoved(Move move) {
