@@ -31,6 +31,9 @@ public enum PieceType {
         return imageId;
     }
 
+    public boolean isNone() {
+        return this.name.equals("NONE");
+    }
     public boolean isRook() {
         return this.name.equals("ROOK");
     }
