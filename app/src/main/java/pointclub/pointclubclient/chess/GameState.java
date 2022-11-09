@@ -16,7 +16,11 @@ import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
 import pointclub.pointclubclient.chess.piece.AbstractPiece;
+import pointclub.pointclubclient.chess.piece.Bishop;
 import pointclub.pointclubclient.chess.piece.King;
+import pointclub.pointclubclient.chess.piece.Knight;
+import pointclub.pointclubclient.chess.piece.Pawn;
+import pointclub.pointclubclient.chess.piece.Queen;
 import pointclub.pointclubclient.chess.piece.Rook;
 
 @Data
@@ -100,6 +104,8 @@ public class GameState {
 
     private void setupClassicBoard() {
         board = new Board(Board.DEFAULT_BOARD_SIZE, Board.DEFAULT_BOARD_SIZE);
+        createWhitePieces();
+        createBlackPieces();
     }
 
     @NonNull
@@ -124,5 +130,37 @@ public class GameState {
 
     public Position getPositionOfPiece(AbstractPiece piece) {
         return board.getPositionOfPiece(piece);
+    }
+
+    public AbstractPiece getPieceAtPosition(Position position) {
+        return board.getSquareByPosition(position).getPiece();
+    }
+
+    private void createWhitePieces() {
+        for (int column = 0; column < Board.DEFAULT_BOARD_SIZE; column++) {
+            board.addNewPiece(new Pawn(Colour.WHITE, new Position(1, column)));
+        }
+        board.addNewPiece(new Rook(Colour.WHITE, new Position(0, 0)));
+        board.addNewPiece(new Knight(Colour.WHITE, new Position(0, 1)));
+        board.addNewPiece(new Bishop(Colour.WHITE, new Position(0, 2)));
+        board.addNewPiece(new Queen(Colour.WHITE, new Position(0, 3)));
+        board.addNewPiece(new King(Colour.WHITE, new Position(0, 4)));
+        board.addNewPiece(new Bishop(Colour.WHITE, new Position(0, 5)));
+        board.addNewPiece(new Knight(Colour.WHITE, new Position(0, 6)));
+        board.addNewPiece(new Rook(Colour.WHITE, new Position(0, 7)));
+    }
+
+    private void createBlackPieces() {
+        for (int column = 0; column < Board.DEFAULT_BOARD_SIZE; column++) {
+            board.addNewPiece(new Pawn(Colour.BLACK, new Position(6, column)));
+        }
+        board.addNewPiece(new Rook(Colour.BLACK, new Position(7, 0)));
+        board.addNewPiece(new Knight(Colour.BLACK, new Position(7, 1)));
+        board.addNewPiece(new Bishop(Colour.BLACK, new Position(7, 2)));
+        board.addNewPiece(new Queen(Colour.BLACK, new Position(7, 3)));
+        board.addNewPiece(new King(Colour.BLACK, new Position(7, 4)));
+        board.addNewPiece(new Bishop(Colour.BLACK, new Position(7, 5)));
+        board.addNewPiece(new Knight(Colour.BLACK, new Position(7, 6)));
+        board.addNewPiece(new Rook(Colour.BLACK, new Position(7, 7)));
     }
 }
