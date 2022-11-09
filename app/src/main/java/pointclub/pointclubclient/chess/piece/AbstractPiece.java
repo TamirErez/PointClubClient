@@ -59,15 +59,22 @@ public abstract class AbstractPiece {
         if (pieceOnTargetPosition.pieceType != PieceType.NONE) {
             return addCaptureMove(gameState, targetPosition, pieceOnTargetPosition, moveType);
         } else {
-            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType));
+            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType,
+                    this.isPromote(targetPosition, gameState.getBoard().getRows())
+            ));
             targetPosition = targetPosition.transform(movingDirection);
             return targetPosition;
         }
     }
 
+    protected boolean isPromote(Position targetPosition, int numOfRows) {
+        return false;
+    }
+
     private Position addCaptureMove(GameState gameState, Position targetPosition, AbstractPiece piece, MoveType moveType) {
         if (piece.colour != colour) {
-            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType));
+            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType,
+                    this.isPromote(targetPosition, gameState.getBoard().getRows())));
         }
         return null;
     }

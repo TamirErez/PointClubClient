@@ -34,6 +34,13 @@ public class Pawn extends AbstractPiece {
     }
 
     @Override
+    protected boolean isPromote(Position targetPosition, int numOfRows) {
+        return getColour().equals(Colour.WHITE)
+                ? targetPosition.getRow() == numOfRows - 1
+                : targetPosition.getRow() == 0;
+    }
+
+    @Override
     public String getAsciiName() {
         return colour == Colour.WHITE ? "♙" : "♟";
     }
