@@ -17,6 +17,11 @@ public class Position {
         this.column = column;
     }
 
+    public Position(String position) {
+        column = position.charAt(0) - 'a';
+        row = Integer.parseInt(position.substring(1)) - 1;
+    }
+
     public Position transform(Direction... directions) {
         Position pos = new Position(row, column);
         Arrays.stream(directions).forEach(direction -> {
