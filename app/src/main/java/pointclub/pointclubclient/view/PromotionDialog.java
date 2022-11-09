@@ -75,6 +75,8 @@ public class PromotionDialog {
     private static PopupWindow buildPopupWindow(View customView) {
         PopupWindow popupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setAnimationStyle(androidx.appcompat.R.style.Animation_AppCompat_Dialog);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
         return popupWindow;
     }
 
