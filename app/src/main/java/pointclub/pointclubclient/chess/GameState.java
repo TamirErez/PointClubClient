@@ -55,9 +55,9 @@ public class GameState {
     }
 
     private void setHasPieceMoved(Move move) {
-        if (move.getMovingPiece().getPieceType().equals(PieceType.ROOK)) {
+        if (move.getMovingPiece().getPieceType().isRook()) {
             ((Rook) move.getMovingPiece()).setHasMoved(true);
-        } else if (move.getMovingPiece().getPieceType().equals(PieceType.KING)) {
+        } else if (move.getMovingPiece().getPieceType().isKing()) {
             ((King) move.getMovingPiece()).setHasMoved(true);
         }
     }

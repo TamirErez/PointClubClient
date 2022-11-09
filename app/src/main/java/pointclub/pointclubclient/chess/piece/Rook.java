@@ -18,7 +18,7 @@ public class Rook extends AbstractPiece {
 
     public Rook(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
-        this.pieceType = PieceType.ROOK;
+        pieceType = colour.equals(Colour.WHITE) ? PieceType.WHITE_ROOK : PieceType.BLACK_ROOK;
         this.value = 5;
     }
 
