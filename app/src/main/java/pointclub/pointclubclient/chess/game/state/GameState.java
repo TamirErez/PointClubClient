@@ -121,15 +121,15 @@ public class GameState {
     }
 
     private void updateThreats() {
-        whiteThreats.clear();
         blackThreats.clear();
+        whiteThreats.clear();
         board.getPieces().forEach(piece -> {
             switch (piece.getColour()) {
                 case BLACK:
-                    whiteThreats.addAll(getPieceThreateningMoves(piece));
+                    blackThreats.addAll(getPieceThreateningMoves(piece));
                     break;
                 case WHITE:
-                    blackThreats.addAll(getPieceThreateningMoves(piece));
+                    whiteThreats.addAll(getPieceThreateningMoves(piece));
                     break;
             }
         });
