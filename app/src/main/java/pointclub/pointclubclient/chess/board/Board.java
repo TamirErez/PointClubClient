@@ -42,7 +42,7 @@ public class Board {
     private void copyPieces(Board board) {
         for (int i = 0; i < board.squares.length; i++) {
             for (int j = 0; j < board.squares[i].length; j++) {
-                this.squares[i][j].setPiece(board.squares[i][j].getPiece());
+                this.squares[i][j].setPiece(board.squares[i][j].getPiece().clone());
             }
         }
     }
