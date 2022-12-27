@@ -14,7 +14,7 @@ import pointclub.pointclubclient.chess.move.Position;
 public class Queen extends AbstractPiece {
     public Queen(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
-        pieceType = colour.equals(Colour.WHITE) ? PieceType.WHITE_QUEEN : PieceType.BLACK_QUEEN;
+        type = colour.equals(Colour.WHITE) ? PieceType.WHITE_QUEEN : PieceType.BLACK_QUEEN;
         this.value = 9;
     }
 

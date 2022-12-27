@@ -93,16 +93,16 @@ public class GameState {
     }
 
     private void setHasPieceMoved(Move move) {
-        if (move.getMovingPiece().getPieceType().isRook()) {
+        if (move.getMovingPiece().getType().isRook()) {
             ((Rook) move.getMovingPiece()).setHasMoved(true);
-        } else if (move.getMovingPiece().getPieceType().isKing()) {
+        } else if (move.getMovingPiece().getType().isKing()) {
             ((King) move.getMovingPiece()).setHasMoved(true);
         }
     }
 
     private void capturePiece(Position endPosition) {
         AbstractPiece removedPiece = board.removePieceFromPosition(endPosition);
-        if (!removedPiece.getPieceType().equals(PieceType.NONE)) {
+        if (!removedPiece.getType().equals(PieceType.NONE)) {
             capturedPieces.add(removedPiece);
         }
     }

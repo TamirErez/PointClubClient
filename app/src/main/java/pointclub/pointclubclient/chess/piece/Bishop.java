@@ -14,7 +14,7 @@ import pointclub.pointclubclient.chess.move.Position;
 public class Bishop extends AbstractPiece {
     public Bishop(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
-        pieceType = colour.equals(Colour.WHITE) ? PieceType.WHITE_BISHOP : PieceType.BLACK_BISHOP;
+        type = colour.equals(Colour.WHITE) ? PieceType.WHITE_BISHOP : PieceType.BLACK_BISHOP;
         this.value = 3;
     }
 

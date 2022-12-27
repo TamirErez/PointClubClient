@@ -21,7 +21,7 @@ public class EmptyPiece extends AbstractPiece {
 
     private EmptyPiece(Colour colour) {
         super(colour, Position.EMPTY_POSITION);
-        this.pieceType = PieceType.NONE;
+        this.type = PieceType.NONE;
         this.value = 0;
     }
 

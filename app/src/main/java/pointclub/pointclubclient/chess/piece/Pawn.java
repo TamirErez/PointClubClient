@@ -15,7 +15,7 @@ import pointclub.pointclubclient.chess.move.Position;
 public class Pawn extends AbstractPiece {
     public Pawn(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
-        pieceType = colour.equals(Colour.WHITE) ? PieceType.WHITE_PAWN : PieceType.BLACK_PAWN;
+        type = colour.equals(Colour.WHITE) ? PieceType.WHITE_PAWN : PieceType.BLACK_PAWN;
         this.value = 1;
     }
 

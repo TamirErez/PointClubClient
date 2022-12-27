@@ -30,7 +30,7 @@ public class Square {
     @NonNull
     @Override
     public String toString() {
-        return piece.getPieceType().equals(PieceType.NONE) ? getAsciiName() : piece.getAsciiName();
+        return piece.getType().equals(PieceType.NONE) ? getAsciiName() : piece.getAsciiName();
     }
 
     public String getAsciiName() {

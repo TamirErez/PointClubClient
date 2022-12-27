@@ -115,7 +115,7 @@ public class Board {
     public List<AbstractPiece> getPieces() {
         return Arrays.stream(squares)
                 .flatMap(row -> Arrays.stream(row).map(Square::getPiece))
-                .filter(abstractPiece -> !abstractPiece.getPieceType().isNone())
+                .filter(abstractPiece -> !abstractPiece.getType().isNone())
                 .collect(Collectors.toList());
     }
 }

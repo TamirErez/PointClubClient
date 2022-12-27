@@ -15,7 +15,7 @@ import pointclub.pointclubclient.chess.move.Position;
 
 public abstract class AbstractPiece {
     @Getter
-    PieceType pieceType;
+    PieceType type;
     @Getter
     Position startingPosition;
     int value;
@@ -56,7 +56,7 @@ public abstract class AbstractPiece {
         }
 
         AbstractPiece pieceOnTargetPosition = gameState.getSquareByPosition(targetPosition).getPiece();
-        if (pieceOnTargetPosition.pieceType != PieceType.NONE) {
+        if (pieceOnTargetPosition.type != PieceType.NONE) {
             return addCaptureMove(gameState, targetPosition, pieceOnTargetPosition, moveType);
         } else {
             movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType,
@@ -82,7 +82,7 @@ public abstract class AbstractPiece {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s %s", colour, pieceType);
+        return String.format("%s %s", colour, type);
     }
 
     @Override

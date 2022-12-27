@@ -18,7 +18,7 @@ public class King extends AbstractPiece {
 
     public King(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
-        pieceType = colour.equals(Colour.WHITE) ? PieceType.WHITE_KING : PieceType.BLACK_KING;
+        type = colour.equals(Colour.WHITE) ? PieceType.WHITE_KING : PieceType.BLACK_KING;
         this.value = 0;
     }
 
