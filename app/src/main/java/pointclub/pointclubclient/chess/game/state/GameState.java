@@ -128,25 +128,26 @@ public class GameState implements GameStateAPI {
     }
 
     private AbstractPiece promotePiece(Move move, PieceType promotedPiece) {
+        Colour pieceColour = move.getMovingPiece().getColour();
         switch (promotedPiece) {
             case BLACK_BISHOP:
             case WHITE_BISHOP:
-                Bishop bishop = new Bishop(currentPlayer, move.getEnd());
+                Bishop bishop = new Bishop(pieceColour, move.getEnd());
                 move.setPromotedPiece(bishop);
                 return bishop;
             case BLACK_ROOK:
             case WHITE_ROOK:
-                Rook rook = new Rook(currentPlayer, move.getEnd());
+                Rook rook = new Rook(pieceColour, move.getEnd());
                 move.setPromotedPiece(rook);
                 return rook;
             case BLACK_KNIGHT:
             case WHITE_KNIGHT:
-                Knight knight = new Knight(currentPlayer, move.getEnd());
+                Knight knight = new Knight(pieceColour, move.getEnd());
                 move.setPromotedPiece(knight);
                 return knight;
             case BLACK_QUEEN:
             case WHITE_QUEEN:
-                Queen queen = new Queen(currentPlayer, move.getEnd());
+                Queen queen = new Queen(pieceColour, move.getEnd());
                 move.setPromotedPiece(queen);
                 return queen;
         }
