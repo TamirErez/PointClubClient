@@ -55,8 +55,21 @@ public class GameState {
     public void move(Move move) {
         capturePiece(move.getEnd());
         board.movePieceToPosition(board.removePieceFromPosition(move.getStart()), move.getEnd());
-        setHasPieceMoved(move);
+        setHasPieceMoved(move.getMovingPiece());
         updateThreats();
+        moves.add(move);
+    }
+
+    private void castle(Move move) {
+        setHasPieceMoved(getPieceAtPosition(move.getCastleTarget()));
+        board.movePieceToPosition(
+                board.removePieceFromPosition(move.getCastleTarget()),
+                board.getPositionTowardsTarget(move.getEnd(), move.getStart(), 1));
+    }
+
+    private void enPassant(Move move) {
+        board.removePieceFromPosition(move.getEnd()
+                .transform(Direction.getOppositeDirection(((Pawn) move.getMovingPiece()).getMovingDirection())));
     }
 
     public void move(Move move, PieceType promotedPiece) {
@@ -92,11 +105,11 @@ public class GameState {
         return EmptyPiece.getInstance();
     }
 
-    private void setHasPieceMoved(Move move) {
-        if (move.getMovingPiece().getType().isRook()) {
-            ((Rook) move.getMovingPiece()).setHasMoved(true);
-        } else if (move.getMovingPiece().getType().isKing()) {
-            ((King) move.getMovingPiece()).setHasMoved(true);
+    private void setHasPieceMoved(AbstractPiece piece) {
+        if (piece.getType().isRook()) {
+            ((Rook) piece).setMoved(true);
+        } else if (piece.getType().isKing()) {
+            ((King) piece).setMoved(true);
         }
     }
 

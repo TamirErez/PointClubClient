@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import pointclub.pointclubclient.chess.enums.MoveType;
 import pointclub.pointclubclient.chess.piece.AbstractPiece;
+import pointclub.pointclubclient.chess.piece.King;
+import pointclub.pointclubclient.chess.piece.Pawn;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +17,19 @@ public class Move {
     MoveType moveType;
     boolean isPromotion;
     AbstractPiece promotedPiece;
+    Position castleTarget;
+    boolean isEnPassant;
 
-    public Move(Position start, Position end, AbstractPiece movingPiece, MoveType moveType, boolean isPromotion) {
-        this(start, end, movingPiece, moveType, isPromotion, null);
+    public static Move promotionMove(Position start, Position end, AbstractPiece movingPiece, MoveType moveType, boolean isPromotion) {
+        return new Move(start, end, movingPiece, moveType, isPromotion, null, null, false);
+    }
+
+    public static Move castleMove(Position start, Position end, King king, Position castleTarget) {
+        return new Move(start, end, king, MoveType.MOVE_ONLY, false, null, castleTarget, false);
+    }
+
+    public static Move enPassantMove(Position start, Position end, Pawn pawn) {
+        return new Move(start, end, pawn, MoveType.CAPTURE_ONLY, false, null, null, true);
     }
 
     @NonNull

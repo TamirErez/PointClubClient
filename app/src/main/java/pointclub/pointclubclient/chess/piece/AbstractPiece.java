@@ -59,9 +59,8 @@ public abstract class AbstractPiece {
         if (pieceOnTargetPosition.type != PieceType.NONE) {
             return addCaptureMove(gameState, targetPosition, pieceOnTargetPosition, moveType);
         } else {
-            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType,
-                    this.isPromote(targetPosition, gameState.getBoard().getRows())
-            ));
+            movesList.add(Move.promotionMove(getPosition(gameState), targetPosition, this, moveType,
+                    this.isPromote(targetPosition, gameState.getBoard().getRows())));
             targetPosition = targetPosition.transform(movingDirection);
             return targetPosition;
         }
@@ -73,7 +72,7 @@ public abstract class AbstractPiece {
 
     private Position addCaptureMove(GameState gameState, Position targetPosition, AbstractPiece piece, MoveType moveType) {
         if (piece.colour != colour) {
-            movesList.add(new Move(getPosition(gameState), targetPosition, this, moveType,
+            movesList.add(Move.promotionMove(getPosition(gameState), targetPosition, this, moveType,
                     this.isPromote(targetPosition, gameState.getBoard().getRows())));
         }
         return null;
