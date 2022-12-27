@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import lombok.Getter;
 import lombok.Setter;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.Direction;
@@ -13,8 +14,9 @@ import pointclub.pointclubclient.chess.move.Move;
 import pointclub.pointclubclient.chess.move.Position;
 
 public class King extends AbstractPiece {
+    @Getter
     @Setter
-    private boolean hasMoved = false;
+    private boolean isMoved = false;
 
     public King(Colour colour, Position startingPosition) {
         super(colour, startingPosition);
@@ -47,7 +49,7 @@ public class King extends AbstractPiece {
     @Override
     public AbstractPiece clone() {
         King clone = new King(colour, startingPosition);
-        clone.hasMoved = hasMoved;
+        clone.isMoved = isMoved;
         return clone;
     }
 }
