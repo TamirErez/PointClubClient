@@ -2,6 +2,7 @@ package pointclub.pointclubclient.chess.game.state;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import lombok.Data;
 import pointclub.pointclubclient.chess.board.Board;
 import pointclub.pointclubclient.chess.board.Square;
 import pointclub.pointclubclient.chess.enums.Colour;
+import pointclub.pointclubclient.chess.enums.Direction;
 import pointclub.pointclubclient.chess.enums.MoveType;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
@@ -23,36 +25,54 @@ import pointclub.pointclubclient.chess.piece.Knight;
 import pointclub.pointclubclient.chess.piece.Pawn;
 import pointclub.pointclubclient.chess.piece.Queen;
 import pointclub.pointclubclient.chess.piece.Rook;
+import pointclub.pointclubclient.chess.rules.ClassicChessRules;
 
 @Data
-public class GameState {
+public class GameState implements GameStateAPI {
     private Board board;
     private Colour currentPlayer;
-    List<Move> moves;
-    Set<Move> whiteThreats;
+    LinkedList<Move> moves;
     Set<Move> blackThreats;
+    Set<Move> whiteThreats;
     List<AbstractPiece> capturedPieces;
 
     public GameState() {
         this.currentPlayer = Colour.WHITE;
-        this.moves = new ArrayList<>();
+        this.moves = new LinkedList<>();
         this.capturedPieces = new ArrayList<>();
-        this.whiteThreats = new HashSet<>();
         this.blackThreats = new HashSet<>();
+        this.whiteThreats = new HashSet<>();
         setupClassicBoard();
         updateThreats();
     }
 
     public GameState(GameState gameState) {
         this.currentPlayer = gameState.currentPlayer;
-        this.moves = new ArrayList<>(gameState.moves);
+        this.moves = new LinkedList<>(gameState.moves);
         this.capturedPieces = new ArrayList<>(gameState.capturedPieces);
-        this.whiteThreats = new HashSet<>(gameState.whiteThreats);
         this.blackThreats = new HashSet<>(gameState.blackThreats);
-        this.board = new Board(board);
+        this.whiteThreats = new HashSet<>(gameState.whiteThreats);
+        this.board = new Board(gameState.board);
+    }
+
+    public GameState simulateMove(Move move) {
+        GameState state = new GameState(this);
+        state.move(move.cloneWithPiece(state.getPieceAtPosition(getPositionOfPiece(move.getMovingPiece()))));
+        return state;
+    }
+
+    @NonNull
+    public List<Move> getPieceThreateningMoves(AbstractPiece piece) {
+        return piece.getPossibleMoves(this).stream().filter(this::isCapturingMove).collect(Collectors.toList());
     }
 
     public void move(Move move) {
+        if (move.getCastleTarget() != null) {
+            castle(move);
+        }
+        if (move.isEnPassant()) {
+            enPassant(move);
+        }
         capturePiece(move.getEnd());
         board.movePieceToPosition(board.removePieceFromPosition(move.getStart()), move.getEnd());
         setHasPieceMoved(move.getMovingPiece());
@@ -76,7 +96,35 @@ public class GameState {
         move(move);
         board.removePieceFromPosition(move.getEnd());
         board.addNewPiece(promotePiece(move, promotedPiece));
-        moves.add(move);
+    }
+
+    public List<Move> getLegalMovesOfPiece(AbstractPiece piece) {
+        return new ClassicChessRules().filterMovesForPiece(piece, this);
+    }
+
+    public boolean isPositionLegal(Position position) {
+        return board.isPositionLegal(position);
+    }
+
+    public Square getSquareByPosition(Position position) {
+        return board.getSquareByPosition(position);
+    }
+
+    public Position getPositionOfPiece(AbstractPiece piece) {
+        return board.getPositionOfPiece(piece);
+    }
+
+    public AbstractPiece getPieceAtPosition(Position position) {
+        return board.getSquareByPosition(position).getPiece();
+    }
+
+    @Override
+    public boolean isCheck(Colour player) {
+        Set<Move> movesToCheck = player == Colour.WHITE ? blackThreats : whiteThreats;
+        PieceType kingType = player == Colour.WHITE ? PieceType.WHITE_KING : PieceType.BLACK_KING;
+
+        return movesToCheck.stream()
+                .anyMatch(move -> board.getSquareByPosition(move.getEnd()).getPiece().getType().equals(kingType));
     }
 
     private AbstractPiece promotePiece(Move move, PieceType promotedPiece) {
@@ -135,18 +183,8 @@ public class GameState {
         });
     }
 
-    @NonNull
-    public List<Move> getPieceThreateningMoves(AbstractPiece piece) {
-        return piece.getPossibleMoves(this).stream().filter(this::isCapturingMove).collect(Collectors.toList());
-    }
-
     private boolean isCapturingMove(Move move) {
         return move.getMoveType().equals(MoveType.MOVE_AND_CAPTURE) || move.getMoveType().equals(MoveType.CAPTURE_ONLY);
-    }
-
-    //TODO: create a filter function that takes all the possible moves for a piece and applies the chess rules on them
-    public List<Move> getLegalMovesOfPiece(AbstractPiece piece) {
-        return new ArrayList<>();
     }
 
     private void setupClassicBoard() {
@@ -159,28 +197,6 @@ public class GameState {
     @Override
     public String toString() {
         return board.toString();
-    }
-
-    private GameState simulateMove(Move move) {
-        GameState state = new GameState(this);
-        state.move(move);
-        return state;
-    }
-
-    public boolean isPositionLegal(Position position) {
-        return board.isPositionLegal(position);
-    }
-
-    public Square getSquareByPosition(Position position) {
-        return board.getSquareByPosition(position);
-    }
-
-    public Position getPositionOfPiece(AbstractPiece piece) {
-        return board.getPositionOfPiece(piece);
-    }
-
-    public AbstractPiece getPieceAtPosition(Position position) {
-        return board.getSquareByPosition(position).getPiece();
     }
 
     private void createWhitePieces() {

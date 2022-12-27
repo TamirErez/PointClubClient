@@ -37,4 +37,8 @@ public class Move {
     public String toString() {
         return movingPiece.toString() + start + "->" + end;
     }
+
+    public Move cloneWithPiece(AbstractPiece movingPiece) {
+        return new Move(start, end, movingPiece, moveType, isPromotion, promotedPiece, castleTarget, isEnPassant);
+    }
 }

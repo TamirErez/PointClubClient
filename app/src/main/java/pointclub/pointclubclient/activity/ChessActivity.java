@@ -70,8 +70,7 @@ public class ChessActivity extends AppCompatActivity {
     }
 
     public List<Move> getPossibleMoves(String currentPosition) {
-        return gameState.getSquareByPosition(new Position(currentPosition)).getPiece().getPossibleMoves(gameState);
-
+        return gameState.getLegalMovesOfPiece(gameState.getSquareByPosition(new Position(currentPosition)).getPiece());
     }
 
     public void movePiece(Move move) {

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
 import lombok.Data;
 import pointclub.pointclubclient.chess.enums.Colour;
+import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Position;
 import pointclub.pointclubclient.chess.piece.AbstractPiece;
 
@@ -117,5 +118,23 @@ public class Board {
                 .flatMap(row -> Arrays.stream(row).map(Square::getPiece))
                 .filter(abstractPiece -> !abstractPiece.getType().isNone())
                 .collect(Collectors.toList());
+    }
+
+    public List<AbstractPiece> getPiecesOfType(PieceType type) {
+        return getPieces().stream()
+                .filter(piece -> piece.getType().equals(type))
+                .collect(Collectors.toList());
+    }
+
+    public Position getPositionTowardsTarget(Position startPosition, Position targetPosition, int steps) {
+        int startColumn = startPosition.getColumn();
+        int startRow = startPosition.getRow();
+        int targetRow = targetPosition.getRow();
+        int targetColumn = targetPosition.getColumn();
+
+        return startRow == targetRow
+                ? new Position(startRow, startColumn + steps * (startColumn < targetColumn ? 1 : -1))
+                : new Position(startRow + steps * (startRow < targetRow ? 1 : -1), startColumn);
+
     }
 }
