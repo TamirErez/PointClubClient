@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import pointclub.pointclubclient.R;
-import pointclub.pointclubclient.chess.GameState;
+import pointclub.pointclubclient.chess.game.state.GameState;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;

@@ -1,4 +1,4 @@
-package pointclub.pointclubclient.chess;
+package pointclub.pointclubclient.chess.game.state;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import lombok.Getter;
-import pointclub.pointclubclient.chess.GameState;
+import pointclub.pointclubclient.chess.game.state.GameState;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.Direction;
 import pointclub.pointclubclient.chess.enums.MoveType;
