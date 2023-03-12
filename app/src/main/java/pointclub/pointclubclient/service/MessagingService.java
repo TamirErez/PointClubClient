@@ -6,18 +6,18 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.MainActivity;
-import pointclub.pointclubclient.service.log.LogService;
-import pointclub.pointclubclient.service.log.LogTag;
+import pointclub.shared.service.log.LogService;
+import pointclub.shared.service.log.LogTag;
 
 public class MessagingService extends FirebaseMessagingService {
     @Override

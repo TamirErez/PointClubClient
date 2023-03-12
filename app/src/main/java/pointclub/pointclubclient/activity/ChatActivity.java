@@ -4,19 +4,20 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.MessageListAdapter;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
-import pointclub.pointclubclient.rest.RestController;
+import pointclub.pointclubclient.rest.ChatRestController;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -86,7 +87,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessageToServer(Message newMessage) {
-        RestController.getInstance().sendMessage(newMessage, response -> {
+        ChatRestController.getInstance().sendMessage(newMessage, response -> {
             if (response != null && response.body() != null && response.isSuccessful()) {
                 newMessage.setServerId(response.body());
                 newMessage.save();

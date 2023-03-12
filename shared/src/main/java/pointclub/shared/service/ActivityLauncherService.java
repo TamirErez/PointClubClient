@@ -1,4 +1,4 @@
-package pointclub.pointclubclient.service;
+package pointclub.shared.service;
 
 import android.content.Intent;
 

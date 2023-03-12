@@ -1,4 +1,4 @@
-package pointclub.pointclubclient.service.log;
+package pointclub.shared.service.log;
 
 import android.util.Log;
 

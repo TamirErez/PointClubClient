@@ -8,20 +8,20 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.ChessActivity;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
-import pointclub.pointclubclient.service.log.LogService;
-import pointclub.pointclubclient.service.log.LogTag;
-
 import pointclub.pointclubclient.view.PromotionDialog.Callable;
+import pointclub.shared.service.log.LogService;
+import pointclub.shared.service.log.LogTag;
 
 public class BoardView extends TableLayout {
 

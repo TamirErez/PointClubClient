@@ -5,15 +5,13 @@ import java.util.List;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.User;
+import pointclub.shared.rest.RequestsApi;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public interface RequestsApi {
-    @GET("admin/isAlive")
-    Call<Boolean> getIsAlive();
-
+public interface ChatRequestsApi extends RequestsApi {
     @POST("user/add")
     Call<Integer> registerUser(@Body User user);
 

@@ -1,4 +1,4 @@
-package pointclub.pointclubclient.rest;
+package pointclub.shared.rest;
 
 import lombok.Getter;
 import retrofit2.Retrofit;
@@ -10,7 +10,7 @@ public class RetrofitClient {
     @Getter
     private final RequestsApi requestsApi;
 
-    private RetrofitClient() {
+    protected RetrofitClient() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
