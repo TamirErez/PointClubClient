@@ -8,17 +8,19 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.ChessActivity;
 import pointclub.pointclubclient.chess.enums.Colour;
 import pointclub.pointclubclient.chess.enums.PieceType;
 import pointclub.pointclubclient.chess.move.Move;
+
 import pointclub.pointclubclient.view.PromotionDialog.Callable;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
@@ -40,12 +42,16 @@ public class BoardView extends TableLayout {
         super(context);
         this.playerColour = playerColour;
         squareLength = getScreenWidth() / 8;
+        createLayoutParams();
         buildBoard();
     }
 
-    public void buildBoard() {
+    private void createLayoutParams() {
         setId(View.generateViewId());
-        setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    public void buildBoard() {
         for (int rowIndex = 0; rowIndex < 4; rowIndex++) {
             addTwoRows(createRowBlackStart(rowIndex * 2), createRowWhiteStart(rowIndex * 2 + 1));
         }
@@ -184,8 +190,7 @@ public class BoardView extends TableLayout {
             if (move.isPromotion()) {
                 showPromotionDialog(selectedSquare.getPiece(),
                         pieceType -> ((ChessActivity) getContext()).movePiece(move, pieceType));
-            }
-            else {
+            } else {
                 ((ChessActivity) getContext()).movePiece(move);
             }
             clearSelection();

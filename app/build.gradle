@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "pointclub.pointclubclient"
         minSdk 31
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -30,6 +30,7 @@ android {
         viewBinding true
         dataBinding true
     }
+    namespace 'pointclub.pointclubclient'
 }
 
 dependencies {
