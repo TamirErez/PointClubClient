@@ -3,6 +3,7 @@ package pointclub.pointclubclient.activity;
 import android.os.Bundle;
 
 import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -23,12 +24,14 @@ public class ChessActivity extends AppCompatActivity {
     private BoardView board;
     private ConstraintLayout chessLayout;
     private GameState gameState;
+    private boolean isLocalGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess);
 
+        isLocalGame = true;
         Colour player = (Colour) getIntent().getSerializableExtra("player");
         initFields(player);
         addBoardToCenter();
@@ -39,6 +42,11 @@ public class ChessActivity extends AppCompatActivity {
         chessLayout = findViewById(R.id.chess_layout);
         board = new BoardView(this, player);
         gameState = new GameState();
+    }
+
+    private void switchPlayer() {
+        gameState.switchPlayer();
+        board.switchPlayer();
     }
 
     private void addBoardToCenter() {
@@ -76,10 +84,16 @@ public class ChessActivity extends AppCompatActivity {
     public void movePiece(Move move) {
         gameState.move(move);
         setupBoard();
+        if (isLocalGame) {
+            switchPlayer();
+        }
     }
 
     public void movePiece(Move move, PieceType promotedPiece) {
         gameState.move(move, promotedPiece);
         setupBoard();
+        if (isLocalGame) {
+            switchPlayer();
+        }
     }
 }

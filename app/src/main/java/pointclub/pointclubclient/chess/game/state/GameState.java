@@ -127,6 +127,11 @@ public class GameState implements GameStateAPI {
                 .anyMatch(move -> board.getSquareByPosition(move.getEnd()).getPiece().getType().equals(kingType));
     }
 
+    @Override
+    public void switchPlayer() {
+        currentPlayer = Colour.getOppositeColor(currentPlayer);
+    }
+
     private AbstractPiece promotePiece(Move move, PieceType promotedPiece) {
         Colour pieceColour = move.getMovingPiece().getColour();
         switch (promotedPiece) {

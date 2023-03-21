@@ -32,7 +32,7 @@ public class BoardView extends TableLayout {
     private final int squareLength;
     private SquareView selectedSquare = null;
     private final List<SquareView> possibleMoves = new ArrayList<>();
-    private final Colour playerColour;
+    private Colour playerColour;
 
     public BoardView(Context context) {
         this(context, Colour.WHITE);
@@ -139,8 +139,8 @@ public class BoardView extends TableLayout {
     }
 
     private void setPieceMovement(ImageView piece) {
-        if (!Objects.equals(getPieceColour(piece), playerColour)) return;
         piece.setOnClickListener(v -> {
+            if (!Objects.equals(getPieceColour(piece), playerColour)) return;
             selectPiece(piece);
             if (selectedSquare != null) {
                 drawPossibleMoves(piece);
@@ -224,9 +224,14 @@ public class BoardView extends TableLayout {
         return getContext().getResources().getResourceEntryName(view.getId());
     }
 
-    private void flipBoard() {
+    public void switchPlayer() {
+        playerColour = Colour.getOppositeColor(playerColour);
+        flipBoard();
+    }
+
+    public void flipBoard() {
         for (int i = 1; i <= 8; i++) {
-            TableRow row = findViewByName("row" + i);
+            TableRow row = findViewByName("row" + (playerColour.equals(Colour.BLACK) ? i : 9 - i));
             removeView(row);
             addView(row);
         }
