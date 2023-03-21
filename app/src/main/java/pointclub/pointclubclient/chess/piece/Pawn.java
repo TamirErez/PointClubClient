@@ -76,6 +76,11 @@ public class Pawn extends AbstractPiece {
     }
 
     @Override
+    public String getNotationName() {
+        return "";
+    }
+
+    @Override
     public String getAsciiName() {
         return colour == Colour.WHITE ? "♙" : "♟";
     }

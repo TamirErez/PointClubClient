@@ -56,4 +56,9 @@ public class Rook extends AbstractPiece {
         clone.isMoved = isMoved;
         return clone;
     }
+
+    @Override
+    public String getNotationName() {
+        return "R";
+    }
 }
