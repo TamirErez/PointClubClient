@@ -78,6 +78,7 @@ public class GameState implements GameStateAPI {
         setHasPieceMoved(move.getMovingPiece());
         updateThreats();
         moves.add(move);
+        move.setCheck(isCheck(Colour.getOppositeColor(currentPlayer)));
     }
 
     private void castle(Move move) {
