@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class User extends SugarRecord<User> {
     private int serverId;
     private String name;
+    private String token;
 
     public User(String name) {
         this.name = name;

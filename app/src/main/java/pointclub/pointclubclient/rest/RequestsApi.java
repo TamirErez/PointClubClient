@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface RequestsApi {
     @GET("admin/isAlive")
@@ -25,4 +26,7 @@ public interface RequestsApi {
 
     @POST("message/add")
     Call<Integer> addMessage(@Body Message message);
+
+    @PUT("user/updateToken")
+    Call<Void> updateToken(@Body User user);
 }

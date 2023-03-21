@@ -36,6 +36,12 @@ public class RestController {
         callRest(RetrofitClient.getInstance().getRequestsApi().addMessage(newMessage), result);
     }
 
+    public void updateToken(String token, Consumer<Response<Void>> result) {
+        User currentUser = User.getCurrentUser();
+        currentUser.setToken(token);
+        callRest(RetrofitClient.getInstance().getRequestsApi().updateToken(currentUser), result);
+    }
+
     private <T> void callRest(Call<T> call, Consumer<Response<T>> result) {
         call.enqueue(new Callback<>() {
             @Override
