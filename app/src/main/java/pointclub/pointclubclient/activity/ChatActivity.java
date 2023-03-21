@@ -15,8 +15,11 @@ import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.MessageListAdapter;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
+import pointclub.pointclubclient.model.RoomWithUser;
 import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.rest.RestController;
+import pointclub.pointclubclient.service.log.LogService;
+import pointclub.pointclubclient.service.log.LogTag;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -32,10 +35,16 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         extractRoomFromIntent();
+        addUserToRoom();
         getRoomMessages();
         setupMessageRecycler();
         messageEditor = findViewById(R.id.message_editor);
         setActionListenerOnMessageEditor();
+    }
+
+    private void addUserToRoom() {
+        RestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser().getServerId(), room.getServerId()),
+                response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
 
     private void extractRoomFromIntent() {

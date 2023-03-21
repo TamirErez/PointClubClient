@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
+import pointclub.pointclubclient.model.RoomWithUser;
 import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.service.log.LogService;
 import pointclub.pointclubclient.service.log.LogTag;
@@ -34,6 +35,10 @@ public class RestController {
 
     public void sendMessage(Message newMessage, Consumer<Response<Integer>> result) {
         callRest(RetrofitClient.getInstance().getRequestsApi().addMessage(newMessage), result);
+    }
+
+    public void addUserToRoom(RoomWithUser roomWithUser, Consumer<Response<Void>> result) {
+        callRest(RetrofitClient.getInstance().getRequestsApi().addUserToRoom(roomWithUser), result);
     }
 
     public void updateToken(String token, Consumer<Response<Void>> result) {

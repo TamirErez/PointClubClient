@@ -4,6 +4,7 @@ import java.util.List;
 
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
+import pointclub.pointclubclient.model.RoomWithUser;
 import pointclub.pointclubclient.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,6 +24,9 @@ public interface RequestsApi {
 
     @GET("room")
     Call<List<Room>> getAllRooms();
+
+    @POST("room/addUser")
+    Call<Void> addUserToRoom(@Body RoomWithUser roomWithUser);
 
     @POST("message/add")
     Call<Integer> addMessage(@Body Message message);
