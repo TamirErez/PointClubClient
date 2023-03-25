@@ -1,8 +1,6 @@
-package pointclub.pointclubclient.model;
+package pointclub.shared.model;
 
 import com.orm.SugarRecord;
-
-import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +13,6 @@ public class User extends SugarRecord<User> {
     private int serverId;
     private String name;
     private String token;
-    private List<Room> rooms;
 
     public User(String name) {
         this.name = name;
@@ -27,6 +24,6 @@ public class User extends SugarRecord<User> {
     }
 
     public static User getCurrentUser(){
-        return findAll(User.class).next();
+        return SugarRecord.findAll(User.class).next();
     }
 }

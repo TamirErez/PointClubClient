@@ -12,8 +12,8 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.model.ChatUser;
 import pointclub.pointclubclient.model.Message;
-import pointclub.pointclubclient.model.User;
 
 public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private enum messageType {
@@ -44,7 +44,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
         Message message = mMessageList.get(position);
-        if (message.getSender().getServerId() == User.getCurrentUser().getServerId()) {
+        if (message.getSender().getServerId() == ChatUser.getCurrentUser().getServerId()) {
             return messageType.sender.getValue();
         } else {
             return messageType.receiver.getValue();
