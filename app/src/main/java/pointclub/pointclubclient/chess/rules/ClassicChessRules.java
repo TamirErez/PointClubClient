@@ -51,7 +51,7 @@ public class ClassicChessRules implements ChessRules {
                 .filter(rook -> isClearLineBetweenPositions(gameState.getPositionOfPiece(rook), kingPosition, gameState))
                 .filter(rook -> !isKingMovesThreatened(kingPosition, gameState.getPositionOfPiece(rook), gameState, king.getColour()))
                 .map(gameState::getPositionOfPiece)
-                .map(rookPosition -> Move.castleMove(kingPosition, gameState.getBoard().getPositionTowardsTarget(kingPosition, rookPosition, 2), king, rookPosition))
+                .map(rookPosition -> Move.createCastleMove(kingPosition, gameState.getBoard().getPositionTowardsTarget(kingPosition, rookPosition, 2), king, rookPosition))
                 .collect(Collectors.toList());
     }
 
@@ -99,14 +99,16 @@ public class ClassicChessRules implements ChessRules {
         PieceType oppositePawn = pawn.getColour() == Colour.WHITE ? PieceType.BLACK_PAWN : PieceType.WHITE_PAWN;
         Position pawnPosition = gameState.getPositionOfPiece(pawn);
         Move lastMove = gameState.getMoves().peekLast();
-        if(lastMove == null) return pawnMoves;
+        if (lastMove == null) return pawnMoves;
 
         if (isLastMoveOpponentPawn(oppositePawn, pawnPosition, lastMove)) {
             if (pawnPosition.transform(Direction.LEFT).equals(lastMove.getEnd())) {
-                pawnMoves.add(Move.enPassantMove(pawnPosition, pawnPosition.transform(pawn.getMovingDirection(), Direction.LEFT), pawn));
+                pawnMoves.add(Move.createEnPassantMove(pawnPosition,
+                        pawnPosition.transform(pawn.getMovingDirection(), Direction.LEFT), pawn));
             }
             if (pawnPosition.transform(Direction.RIGHT).equals(lastMove.getEnd())) {
-                pawnMoves.add(Move.enPassantMove(pawnPosition, pawnPosition.transform(pawn.getMovingDirection(), Direction.RIGHT), pawn));
+                pawnMoves.add(Move.createEnPassantMove(pawnPosition,
+                        pawnPosition.transform(pawn.getMovingDirection(), Direction.RIGHT), pawn));
             }
         }
         return pawnMoves;

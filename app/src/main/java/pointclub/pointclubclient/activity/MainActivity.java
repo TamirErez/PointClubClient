@@ -179,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
                     String token = task.getResult();
                     LogService.info(LogTag.TOKEN, token);
+                    RestController.getInstance().updateToken(token,
+                            response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
                 });
     }
 

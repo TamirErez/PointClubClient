@@ -4,19 +4,22 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.MessageListAdapter;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
+import pointclub.pointclubclient.model.RoomWithUser;
 import pointclub.pointclubclient.model.User;
+import pointclub.pointclubclient.rest.RestController;
+import pointclub.pointclubclient.service.log.LogService;
+import pointclub.pointclubclient.service.log.LogTag;
 import pointclub.pointclubclient.rest.ChatRestController;
 
 public class ChatActivity extends AppCompatActivity {
@@ -33,10 +36,16 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         extractRoomFromIntent();
+        addUserToRoom();
         getRoomMessages();
         setupMessageRecycler();
         messageEditor = findViewById(R.id.message_editor);
         setActionListenerOnMessageEditor();
+    }
+
+    private void addUserToRoom() {
+        RestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser().getServerId(), room.getServerId()),
+                response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
 
     private void extractRoomFromIntent() {

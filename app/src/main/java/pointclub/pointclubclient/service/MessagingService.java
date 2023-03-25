@@ -18,13 +18,17 @@ import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.MainActivity;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
+import pointclub.pointclubclient.rest.RestController;
+import pointclub.pointclubclient.service.log.LogService;
+import pointclub.pointclubclient.service.log.LogTag;
 
 public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         LogService.info(LogTag.TOKEN, token);
-        //TODO: send token to server
+        RestController.getInstance().updateToken(token,
+                response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
     }
 
     @Override

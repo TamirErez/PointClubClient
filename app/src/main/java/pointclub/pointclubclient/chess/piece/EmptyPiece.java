@@ -40,4 +40,9 @@ public class EmptyPiece extends AbstractPiece {
     public AbstractPiece clone() {
         return this;
     }
+
+    @Override
+    public String getNotationName() {
+        return null;
+    }
 }

@@ -59,8 +59,14 @@ public class Position {
         column++;
     }
 
-    private char translateColumnToLetter(int column) {
+    public static char translateColumnToLetter(int column) {
         return (char) ('a' + column);
+    }
+
+    public int getDistanceToPosition(Position position){
+        return (int) Math.sqrt(
+                (position.row - row) * (position.row - row) +
+                (position.column - column) * (position.column - column));
     }
 
     @NonNull

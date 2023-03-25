@@ -4,12 +4,14 @@ import java.util.List;
 
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
+import pointclub.pointclubclient.model.RoomWithUser;
 import pointclub.pointclubclient.model.User;
 import pointclub.shared.rest.RequestsApi;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface ChatRequestsApi extends RequestsApi {
     @POST("user/add")
@@ -21,6 +23,12 @@ public interface ChatRequestsApi extends RequestsApi {
     @GET("room")
     Call<List<Room>> getAllRooms();
 
+    @POST("room/addUser")
+    Call<Void> addUserToRoom(@Body RoomWithUser roomWithUser);
+
     @POST("message/add")
     Call<Integer> addMessage(@Body Message message);
+
+    @PUT("user/updateToken")
+    Call<Void> updateToken(@Body User user);
 }
