@@ -78,6 +78,7 @@ public class GameState implements GameStateAPI {
         setHasPieceMoved(move.getMovingPiece());
         updateThreats();
         moves.add(move);
+        move.setCheck(isCheck(Colour.getOppositeColor(currentPlayer)));
     }
 
     private void castle(Move move) {
@@ -125,6 +126,11 @@ public class GameState implements GameStateAPI {
 
         return movesToCheck.stream()
                 .anyMatch(move -> board.getSquareByPosition(move.getEnd()).getPiece().getType().equals(kingType));
+    }
+
+    @Override
+    public void switchPlayer() {
+        currentPlayer = Colour.getOppositeColor(currentPlayer);
     }
 
     private AbstractPiece promotePiece(Move move, PieceType promotedPiece) {

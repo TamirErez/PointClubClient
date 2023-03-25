@@ -6,16 +6,16 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.activity.MainActivity;
+import pointclub.shared.rest.RestController;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
 
@@ -24,7 +24,8 @@ public class MessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         LogService.info(LogTag.TOKEN, token);
-        //TODO: send token to server
+        RestController.getInstance().updateToken(token,
+                response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
     }
 
     @Override

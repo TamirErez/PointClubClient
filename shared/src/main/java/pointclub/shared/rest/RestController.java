@@ -1,9 +1,9 @@
 package pointclub.shared.rest;
 
-import androidx.annotation.NonNull;
-
 import java.util.function.Consumer;
 
+import androidx.annotation.NonNull;
+import pointclub.shared.model.User;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
 import retrofit2.Call;
@@ -15,6 +15,12 @@ public class RestController {
 
     public void isAlive(Consumer<Response<Boolean>> result){
         callRest(RetrofitClient.getInstance().getRequestsApi().getIsAlive(), result);
+    }
+
+    public void updateToken(String token, Consumer<Response<Void>> result) {
+        User currentUser = User.getCurrentUser();
+        currentUser.setToken(token);
+        callRest(RetrofitClient.getInstance().getRequestsApi().updateToken(currentUser), result);
     }
 
     protected <T> void callRest(Call<T> call, Consumer<Response<T>> result) {

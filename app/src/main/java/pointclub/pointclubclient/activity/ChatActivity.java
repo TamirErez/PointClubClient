@@ -4,20 +4,22 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.MessageListAdapter;
+import pointclub.pointclubclient.model.ChatUser;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
-import pointclub.pointclubclient.model.User;
+import pointclub.pointclubclient.model.RoomWithUser;
 import pointclub.pointclubclient.rest.ChatRestController;
+import pointclub.shared.service.log.LogService;
+import pointclub.shared.service.log.LogTag;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -33,10 +35,16 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         extractRoomFromIntent();
+        addUserToRoom();
         getRoomMessages();
         setupMessageRecycler();
         messageEditor = findViewById(R.id.message_editor);
         setActionListenerOnMessageEditor();
+    }
+
+    private void addUserToRoom() {
+        ChatRestController.getInstance().addUserToRoom(new RoomWithUser(ChatUser.getCurrentUser().getServerId(), room.getServerId()),
+                response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
 
     private void extractRoomFromIntent() {
@@ -70,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         messageEditor.setOnEditorActionListener((textView, actionId, event) -> {
             if (isEnterPressed(event) && textView.getText().length() > 0) {
                 Message newMessage = new Message(-1, textView.getText().toString(),
-                        new Date(), room, User.getCurrentUser());
+                        new Date(), room, new ChatUser(ChatUser.getCurrentUser()));
                 addMessageToView(newMessage);
                 sendMessageToServer(newMessage);
             }

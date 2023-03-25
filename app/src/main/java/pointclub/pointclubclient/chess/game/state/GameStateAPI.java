@@ -30,4 +30,6 @@ interface GameStateAPI {
     AbstractPiece getPieceAtPosition(Position position);
 
     boolean isCheck(Colour player);
+
+    void switchPlayer();
 }

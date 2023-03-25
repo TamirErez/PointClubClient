@@ -4,23 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.activity.result.ActivityResult;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.RoomListAdapter;
 import pointclub.pointclubclient.model.Room;
-import pointclub.pointclubclient.model.User;
 import pointclub.pointclubclient.rest.ChatRestController;
+import pointclub.shared.model.User;
 import pointclub.shared.rest.RestController;
 import pointclub.shared.service.ActivityLauncherService;
 import pointclub.shared.service.log.LogService;
@@ -179,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
                     String token = task.getResult();
                     LogService.info(LogTag.TOKEN, token);
+                    RestController.getInstance().updateToken(token,
+                            response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
                 });
     }
 

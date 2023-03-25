@@ -5,7 +5,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitClient {
-    public static final String SERVER_URL = "http://93.173.96.248:8080/";
+    public static final String SERVER_URL = "http://pointclub.hopto.org:8080/";
     private static RetrofitClient instance = null;
     @Getter
     private final RequestsApi requestsApi;

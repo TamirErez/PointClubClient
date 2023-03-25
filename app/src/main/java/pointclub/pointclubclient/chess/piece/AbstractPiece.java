@@ -54,16 +54,16 @@ public abstract class AbstractPiece {
         if (targetPosition == null || !gameState.isPositionLegal(targetPosition)) {
             return Position.EMPTY_POSITION;
         }
-
+        boolean isCheck = gameState.isCheck(Colour.getOppositeColor(getColour()));
         AbstractPiece pieceOnTargetPosition = gameState.getSquareByPosition(targetPosition).getPiece();
         if (pieceOnTargetPosition.type != PieceType.NONE) {
             if (!moveType.equals(MoveType.MOVE_ONLY)) {
-                addCaptureMove(gameState, targetPosition, pieceOnTargetPosition, moveType);
+                addCaptureMove(gameState, targetPosition, pieceOnTargetPosition, moveType, isCheck);
             }
             return Position.EMPTY_POSITION;
         } else {
-            movesList.add(Move.promotionMove(getPosition(gameState), targetPosition, this, moveType,
-                    this.isPromote(targetPosition, gameState.getBoard().getRows())));
+            movesList.add(Move.createMove(getPosition(gameState), targetPosition, this, moveType,
+                    this.isPromote(targetPosition, gameState.getBoard().getRows()), false));
             targetPosition = targetPosition.transform(movingDirection);
             return targetPosition;
         }
@@ -73,12 +73,14 @@ public abstract class AbstractPiece {
         return false;
     }
 
-    private void addCaptureMove(GameState gameState, Position targetPosition, AbstractPiece piece, MoveType moveType) {
-        if (piece.colour != colour) {
-            movesList.add(Move.promotionMove(getPosition(gameState), targetPosition, this, moveType,
-                    this.isPromote(targetPosition, gameState.getBoard().getRows())));
+    private void addCaptureMove(GameState gameState, Position targetPosition, AbstractPiece pieceAtEnd, MoveType moveType, boolean isCheck) {
+        if (pieceAtEnd.colour != colour) {
+            movesList.add(Move.createMove(getPosition(gameState), targetPosition, this, moveType,
+                    this.isPromote(targetPosition, gameState.getBoard().getRows()), true));
         }
     }
+
+    public abstract String getNotationName();
 
     @NonNull
     @Override
