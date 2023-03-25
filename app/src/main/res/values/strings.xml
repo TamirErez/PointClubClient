@@ -11,5 +11,4 @@
     <string name="register_user_message">I see it\'s your first time in pointclub!\nPlease Register</string>
     <string name="last_message_placeholder">last message placeholder</string>
     <string name="room_name_placeholder">room name placeholder</string>
-    <string name="x">x</string>
 </resources>

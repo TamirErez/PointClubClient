@@ -5,6 +5,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.PointClubClient">
+        <activity
+            android:name="activity.ChessActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

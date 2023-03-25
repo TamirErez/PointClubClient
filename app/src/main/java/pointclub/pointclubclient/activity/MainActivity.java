@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import activity.ChessActivity;
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         initRooms();
         initRoomRecycler();
         setRegisterRoomButtonAction();
+
+        Intent i = new Intent(this, ChessActivity.class);
     }
 
     private void setupServer() {

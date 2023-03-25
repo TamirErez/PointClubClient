@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
 }
 
 android {
@@ -7,7 +7,6 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "pointclub.chess"
         minSdk 31
         targetSdk 33
         versionCode 1
@@ -35,4 +34,10 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
+
+    implementation project(path: ':shared')
+
+    //noinspection AnnotationProcessorOnCompilePath
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
 }
