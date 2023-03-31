@@ -13,6 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "PointClubClient"
-include ':app'
+include ':home'
 include ':shared'
 include ':chess'
+include ':chat'
