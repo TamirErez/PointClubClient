@@ -1,5 +1,7 @@
 package pointclub.pointclubclient.model;
 
+import com.orm.dsl.Table;
+
 import java.util.List;
 
 import lombok.Data;
@@ -8,6 +10,7 @@ import pointclub.shared.model.User;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Table(name = "User")
 public class ChatUser extends User {
     private List<Room> rooms;
 
