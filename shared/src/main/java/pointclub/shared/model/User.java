@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class User extends SugarRecord<User> {
+public class User extends SugarRecord {
     private int serverId;
     private String name;
     private String token;

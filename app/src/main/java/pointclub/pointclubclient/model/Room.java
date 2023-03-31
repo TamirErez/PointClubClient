@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class Room extends SugarRecord<Room> {
+public class Room extends SugarRecord {
     private int serverId;
     private String name;
     @Ignore

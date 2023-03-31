@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         rooms.removeAll(roomList);
-        rooms.forEach(Room::delete);
+        rooms.forEach(room -> room.delete());
     }
 
     private void checkServerConnection() {
@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
                     String token = task.getResult();
                     LogService.info(LogTag.TOKEN, token);
+                    //TODO: Update token only after user is created for the first time
                     RestController.getInstance().updateToken(token,
                             response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
                 });

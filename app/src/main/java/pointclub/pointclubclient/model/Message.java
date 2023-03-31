@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message extends SugarRecord<Message> {
+public class Message extends SugarRecord {
     private int serverId;
     private String content;
     private Date sendTime;

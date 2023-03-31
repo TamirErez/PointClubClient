@@ -64,7 +64,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         messageList.removeAll(badMessages);
-        badMessages.forEach(Message::delete);
+        badMessages.forEach(message -> message.delete());
     }
 
     private void setupMessageRecycler() {
