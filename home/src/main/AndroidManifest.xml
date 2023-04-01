@@ -5,12 +5,11 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:name="com.orm.SugarApp"
-        android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="activity.MainActivity"
+            android:name="activity.MainMenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
