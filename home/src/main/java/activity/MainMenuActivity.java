@@ -1,18 +1,24 @@
 package activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import enums.MenuOptions;
 import pointclub.pointclubclient.R;
 
 public class MainMenuActivity extends Activity {
@@ -30,9 +36,11 @@ public class MainMenuActivity extends Activity {
 
     private void createCards() {
         GridLayout gridLayout = findViewById(R.id.main_menu_grid);
-        gridLayout.addView(createCard(0, 0, "Chat"));
-        gridLayout.addView(createCard(0, 1, "Chess"));
-        gridLayout.addView(createCard(1, 0, "Settings"));
+        Arrays.stream(MenuOptions.values()).forEach((menuOption) -> gridLayout.addView(
+                createCard(
+                        gridLayout.getChildCount() / 2,
+                        gridLayout.getChildCount() % 2,
+                        menuOption.name())));
     }
 
     private MaterialCardView createCard(int row, int column, String cardText) {
@@ -40,8 +48,15 @@ public class MainMenuActivity extends Activity {
         cardView.setLayoutParams(createCardLayoutParams(row, column));
         cardView.setCardBackgroundColor(ContextCompat.getColor(this, pointclub.chess.R.color.purple_500));
         cardView.setClickable(true);
+        cardView.setOnClickListener(this::startCardActivity);
         cardView.addView(createCardText(cardText));
         return cardView;
+    }
+
+    private void startCardActivity(View v) {
+        TextView child = (TextView) ((CardView)v).getChildAt(0);
+        MenuOptions menuOptions = MenuOptions.valueOf(child.getText().toString());
+        startActivity(new Intent(this, menuOptions.getActivityClass()));
     }
 
     @NonNull
