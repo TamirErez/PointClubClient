@@ -12,7 +12,7 @@ import java.util.List;
 import activity.ChatActivity;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import model.Room;
+import pointclub.shared.model.chat.Room;
 import pointclub.chat.R;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

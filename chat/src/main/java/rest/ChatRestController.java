@@ -3,10 +3,10 @@ package rest;
 import java.util.List;
 import java.util.function.Consumer;
 
-import model.ChatUser;
-import model.Message;
-import model.Room;
-import model.RoomWithUser;
+import pointclub.shared.model.User;
+import pointclub.shared.model.chat.Message;
+import pointclub.shared.model.chat.Room;
+import pointclub.shared.model.chat.RoomWithUser;
 import pointclub.shared.rest.RestController;
 import retrofit2.Response;
 
@@ -16,7 +16,7 @@ public class ChatRestController extends RestController {
     private final ChatRequestsApi requestsApi;
 
     public void registerUser(String username, Consumer<Response<Integer>> result) {
-        callRest(requestsApi.registerUser(new ChatUser(username)), result);
+        callRest(requestsApi.registerUser(new User(username)), result);
     }
 
     public void registerRoom(String roomName, Consumer<Response<Integer>> result) {

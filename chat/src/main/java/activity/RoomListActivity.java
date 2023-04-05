@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import model.Room;
+import pointclub.shared.model.chat.Room;
 import pointclub.chat.R;
 import pointclub.shared.model.User;
 import pointclub.shared.rest.RestController;
