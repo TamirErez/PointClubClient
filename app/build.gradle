@@ -43,8 +43,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.annotation:annotation:1.4.0'
-    implementation 'com.github.satyan:sugar:1.3'
+    implementation 'com.github.satyan:sugar:1.5'
     implementation project(path: ':shared')
+    implementation project(path: ':chess')
     //noinspection AnnotationProcessorOnCompilePath
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'

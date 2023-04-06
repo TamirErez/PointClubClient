@@ -16,9 +16,6 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
-            android:name=".activity.ChessActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.RegisterActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Holo.Dialog" />
