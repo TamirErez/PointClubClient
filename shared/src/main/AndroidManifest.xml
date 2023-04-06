@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pointclub.shared">
 
-    <application
-        android:supportsRtl="true" />
+    <application android:supportsRtl="true"></application>
 
 </manifest>
