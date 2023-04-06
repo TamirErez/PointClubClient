@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <string name="ok">OK</string>
+    <string name="placeholder">PLACEHOLDER</string>
+</resources>

@@ -1,4 +1,4 @@
-package activity;
+package pointclub.shared.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,10 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import pointclub.shared.R;
 import pointclub.shared.model.User;
 import pointclub.shared.model.chat.Room;
-import pointclub.chat.R;
-import rest.ChatRestController;
+import pointclub.shared.rest.RestController;
 import retrofit2.Response;
 
 public class RegisterActivity extends Activity {
@@ -72,14 +72,14 @@ public class RegisterActivity extends Activity {
     }
 
     private void registerUser() {
-        ChatRestController.getInstance().registerUser(
+        RestController.getInstance().registerUser(
                 getRegisterValue(),
                 this::saveUserWithServerId
         );
     }
 
     private void registerRoom() {
-        ChatRestController.getInstance().registerRoom(
+        RestController.getInstance().registerRoom(
                 getRegisterValue(),
                 this::saveRoomWithServerId
         );

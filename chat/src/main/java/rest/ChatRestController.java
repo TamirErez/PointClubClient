@@ -15,24 +15,8 @@ public class ChatRestController extends RestController {
     private static ChatRestController instance;
     private final ChatRequestsApi requestsApi;
 
-    public void registerUser(String username, Consumer<Response<Integer>> result) {
-        callRest(requestsApi.registerUser(new User(username)), result);
-    }
-
-    public void registerRoom(String roomName, Consumer<Response<Integer>> result) {
-        callRest(requestsApi.registerRoom(new Room(roomName)), result);
-    }
-
-    public void getAllRooms(Consumer<Response<List<Room>>> result) {
-        callRest(requestsApi.getAllRooms(), result);
-    }
-
     public void sendMessage(Message newMessage, Consumer<Response<Integer>> result) {
         callRest(requestsApi.addMessage(newMessage), result);
-    }
-
-    public void addUserToRoom(RoomWithUser roomWithUser, Consumer<Response<Void>> result) {
-        callRest(requestsApi.addUserToRoom(roomWithUser), result);
     }
 
     public static ChatRestController getInstance() {

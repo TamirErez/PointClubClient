@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import pointclub.shared.activity.RegisterActivity;
 import pointclub.shared.model.chat.Room;
 import pointclub.chat.R;
 import pointclub.shared.model.User;
@@ -36,8 +38,8 @@ public class RoomListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
-        setupServer();
         registerUserIfNotExist();
+        setupServer();
         initRooms();
         initRoomRecycler();
         setRegisterRoomButtonAction();
@@ -45,7 +47,9 @@ public class RoomListActivity extends AppCompatActivity {
 
     private void setupServer() {
         checkServerConnection();
-        getToken();
+        if(isUserExist()) {
+            getToken();
+        }
     }
 
     private void registerUserIfNotExist() {
