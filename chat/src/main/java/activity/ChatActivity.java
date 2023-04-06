@@ -12,10 +12,11 @@ import adapter.MessageListAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import model.ChatUser;
-import model.Message;
-import model.Room;
-import model.RoomWithUser;
+
+import pointclub.shared.model.User;
+import pointclub.shared.model.chat.Message;
+import pointclub.shared.model.chat.Room;
+import pointclub.shared.model.chat.RoomWithUser;
 import pointclub.chat.R;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
@@ -43,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void addUserToRoom() {
-        ChatRestController.getInstance().addUserToRoom(new RoomWithUser(ChatUser.getCurrentUser().getServerId(), room.getServerId()),
+        ChatRestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser(), room),
                 response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
 
@@ -78,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
         messageEditor.setOnEditorActionListener((textView, actionId, event) -> {
             if (isEnterPressed(event) && textView.getText().length() > 0) {
                 Message newMessage = new Message(-1, textView.getText().toString(),
-                        new Date(), room, new ChatUser(ChatUser.getCurrentUser()));
+                        new Date(), room, User.getCurrentUser());
                 addMessageToView(newMessage);
                 sendMessageToServer(newMessage);
             }

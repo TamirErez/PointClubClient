@@ -1,4 +1,4 @@
-package model;
+package pointclub.shared.model.chat;
 
 import com.orm.SugarRecord;
 
@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import pointclub.shared.model.User;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -18,5 +19,5 @@ public class Message extends SugarRecord {
     private String content;
     private Date sendTime;
     private Room room;
-    private ChatUser sender;
+    private User sender;
 }

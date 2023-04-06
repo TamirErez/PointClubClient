@@ -1,4 +1,4 @@
-package model;
+package pointclub.shared.model.chat;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
@@ -16,8 +16,6 @@ import lombok.NoArgsConstructor;
 public class Room extends SugarRecord {
     private int serverId;
     private String name;
-    @Ignore
-    private List<ChatUser> users = new ArrayList<>();
 
     public Room(String name) {
         this.name = name;
