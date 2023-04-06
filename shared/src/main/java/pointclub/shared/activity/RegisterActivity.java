@@ -10,7 +10,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import pointclub.shared.R;
+import pointclub.shared.enums.RegisterOption;
 import pointclub.shared.model.User;
 import pointclub.shared.model.chat.Room;
 import pointclub.shared.rest.RestController;
@@ -18,11 +23,8 @@ import retrofit2.Response;
 
 public class RegisterActivity extends Activity {
 
-    private REGISTER_OPTION registerOption;
+    private RegisterOption registerOption;
 
-    public enum REGISTER_OPTION {
-        user, room
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class RegisterActivity extends Activity {
         setKeyListenerOnNameField();
         setRegisterButtonAction();
         findViewById(R.id.registerInputField).requestFocus();
-        registerOption = (REGISTER_OPTION) getIntent().getExtras().get("option");
+        registerOption = (RegisterOption) getIntent().getExtras().get("option");
     }
 
     private void setTitle() {
@@ -62,10 +64,10 @@ public class RegisterActivity extends Activity {
     private void register() {
         if (getRegisterValue().length() == 0) return;
         switch (registerOption) {
-            case user:
+            case USER:
                 registerUser();
                 break;
-            case room:
+            case ROOM:
                 registerRoom();
                 break;
         }
@@ -97,8 +99,7 @@ public class RegisterActivity extends Activity {
         String roomName = getRegisterValue();
         new Room(roomId, roomName).save();
         Intent i = new Intent();
-        i.putExtra("id", roomId);
-        i.putExtra("name", roomName);
+        i.putExtra("result", new RegisterResult(roomId, roomName));
         setResult(Activity.RESULT_OK, i);
         finish();
     }
@@ -117,10 +118,18 @@ public class RegisterActivity extends Activity {
     }
 
     public void saveUser(int userId) {
-        new User(userId, getRegisterValue()).save();
+        String userName = getRegisterValue();
+        new User(userId, userName).save();
         Intent i = new Intent();
-        i.putExtra("id", userId);
+        i.putExtra("result", new RegisterResult(userId, userName));
         setResult(Activity.RESULT_OK, i);
         finish();
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class RegisterResult implements Serializable {
+        private int id;
+        private String value;
     }
 }
