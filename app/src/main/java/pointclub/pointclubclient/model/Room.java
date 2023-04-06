@@ -17,7 +17,7 @@ public class Room extends SugarRecord<Room> {
     private int serverId;
     private String name;
     @Ignore
-    private List<User> users = new ArrayList<>();
+    private List<ChatUser> users = new ArrayList<>();
 
     public Room(String name) {
         this.name = name;

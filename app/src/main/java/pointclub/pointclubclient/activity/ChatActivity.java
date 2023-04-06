@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.MessageListAdapter;
+import pointclub.pointclubclient.model.ChatUser;
 import pointclub.pointclubclient.model.Message;
 import pointclub.pointclubclient.model.Room;
 import pointclub.pointclubclient.model.RoomWithUser;
-import pointclub.pointclubclient.model.User;
-import pointclub.pointclubclient.rest.RestController;
-import pointclub.pointclubclient.service.log.LogService;
-import pointclub.pointclubclient.service.log.LogTag;
+import pointclub.pointclubclient.rest.ChatRestController;
+import pointclub.shared.service.log.LogService;
+import pointclub.shared.service.log.LogTag;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void addUserToRoom() {
-        RestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser().getServerId(), room.getServerId()),
+        ChatRestController.getInstance().addUserToRoom(new RoomWithUser(ChatUser.getCurrentUser().getServerId(), room.getServerId()),
                 response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
 
@@ -78,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         messageEditor.setOnEditorActionListener((textView, actionId, event) -> {
             if (isEnterPressed(event) && textView.getText().length() > 0) {
                 Message newMessage = new Message(-1, textView.getText().toString(),
-                        new Date(), room, User.getCurrentUser());
+                        new Date(), room, new ChatUser(ChatUser.getCurrentUser()));
                 addMessageToView(newMessage);
                 sendMessageToServer(newMessage);
             }
@@ -95,7 +95,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessageToServer(Message newMessage) {
-        RestController.getInstance().sendMessage(newMessage, response -> {
+        ChatRestController.getInstance().sendMessage(newMessage, response -> {
             if (response != null && response.body() != null && response.isSuccessful()) {
                 newMessage.setServerId(response.body());
                 newMessage.save();

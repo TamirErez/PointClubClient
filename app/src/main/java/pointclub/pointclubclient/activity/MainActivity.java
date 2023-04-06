@@ -18,11 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import pointclub.pointclubclient.R;
 import pointclub.pointclubclient.adapter.RoomListAdapter;
 import pointclub.pointclubclient.model.Room;
-import pointclub.pointclubclient.model.User;
-import pointclub.pointclubclient.rest.RestController;
-import pointclub.pointclubclient.service.ActivityLauncherService;
-import pointclub.pointclubclient.service.log.LogService;
-import pointclub.pointclubclient.service.log.LogTag;
+import pointclub.pointclubclient.rest.ChatRestController;
+import pointclub.shared.model.User;
+import pointclub.shared.rest.RestController;
+import pointclub.shared.service.ActivityLauncherService;
+import pointclub.shared.service.log.LogService;
+import pointclub.shared.service.log.LogTag;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRooms() {
-        RestController.getInstance().getAllRooms(listResponse -> {
+        ChatRestController.getInstance().getAllRooms(listResponse -> {
             if (listResponse != null && listResponse.body() != null && listResponse.isSuccessful()) {
                 roomList.addAll(listResponse.body());
                 roomAdapter.notifyItemRangeInserted(0, roomList.size());

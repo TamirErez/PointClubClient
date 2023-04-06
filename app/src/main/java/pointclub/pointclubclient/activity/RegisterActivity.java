@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import pointclub.pointclubclient.R;
+import pointclub.pointclubclient.model.ChatUser;
 import pointclub.pointclubclient.model.Room;
-import pointclub.pointclubclient.model.User;
-import pointclub.pointclubclient.rest.RestController;
+import pointclub.pointclubclient.rest.ChatRestController;
 import retrofit2.Response;
 
 public class RegisterActivity extends Activity {
@@ -71,14 +71,14 @@ public class RegisterActivity extends Activity {
     }
 
     private void registerUser() {
-        RestController.getInstance().registerUser(
+        ChatRestController.getInstance().registerUser(
                 getRegisterValue(),
                 this::saveUserWithServerId
         );
     }
 
     private void registerRoom() {
-        RestController.getInstance().registerRoom(
+        ChatRestController.getInstance().registerRoom(
                 getRegisterValue(),
                 this::saveRoomWithServerId
         );
@@ -116,7 +116,7 @@ public class RegisterActivity extends Activity {
     }
 
     public void saveUser(int userId) {
-        new User(userId, getRegisterValue()).save();
+        new ChatUser(userId, getRegisterValue()).save();
         Intent i = new Intent();
         i.putExtra("id", userId);
         setResult(Activity.RESULT_OK, i);

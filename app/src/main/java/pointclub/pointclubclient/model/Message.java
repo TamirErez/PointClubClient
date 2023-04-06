@@ -18,5 +18,5 @@ public class Message extends SugarRecord<Message> {
     private String content;
     private Date sendTime;
     private Room room;
-    private User sender;
+    private ChatUser sender;
 }
