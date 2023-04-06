@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/promotion_queen"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/white_queen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/promotion_knight"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/white_knight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/promotion_queen"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/promotion_rook"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/white_rook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/promotion_knight"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/promotion_bishop"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/white_bishop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/promotion_rook"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/closePopupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/x"
+        android:textColor="#000"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/promotion_bishop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

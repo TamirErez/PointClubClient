@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PointClubClient</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="enter_message">Message</string>
+    <string name="newUserName">Name</string>
+    <string name="registerRequest">Please Register by Entering a Name</string>
+    <string name="add_room_button">add room button</string>
+    <string name="last_message_placeholder">last message placeholder</string>
+    <string name="room_name_placeholder">room name placeholder</string>
+</resources>
