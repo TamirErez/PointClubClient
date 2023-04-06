@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="activity.RegisterActivity"
+            android:name="pointclub.shared.activity.RegisterActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Holo.Dialog" />
         <activity
