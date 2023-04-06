@@ -1,6 +1,5 @@
 package activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,26 +11,95 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
+import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+
 import enums.MenuOptions;
 import pointclub.pointclubclient.R;
+import pointclub.shared.enums.RegisterOption;
+import pointclub.shared.model.User;
+import pointclub.shared.rest.RestController;
+import pointclub.shared.service.RegisterService;
+import pointclub.shared.service.log.LogService;
+import pointclub.shared.service.log.LogTag;
 
-public class MainMenuActivity extends Activity {
+public class MainMenuActivity extends AppCompatActivity {
     private int dp;
     private int sp;
+    private RegisterService registerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        registerService = new RegisterService(this);
         initUnitFields();
         createCards();
+        setupServer();
+        registerUserIfNotExist();
+    }
+
+
+    private void registerUserIfNotExist() {
+        if (!isUserExist()) {
+            registerService.register(RegisterOption.USER, result -> {
+                LogService.info(LogTag.REGISTER, "New User id: " + result.getId());
+                getToken();
+            });
+        }
+    }
+
+    private boolean isUserExist() {
+        List<User> users = User.listAll(User.class);
+        if (users.size() > 0) {
+            LogService.info(LogTag.QUERY_USER, users.get(0).toString());
+            return true;
+        }
+        return false;
+    }
+
+    private void setupServer() {
+        checkServerConnection();
+        if (isUserExist()) {
+            getToken();
+        }
+    }
+
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        LogService.warn(LogTag.TOKEN, task.getException());
+                        return;
+                    }
+
+                    String token = task.getResult();
+                    LogService.info(LogTag.TOKEN, token);
+                    RestController.getInstance().updateToken(token,
+                            response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
+                });
+    }
+
+
+    private void checkServerConnection() {
+        RestController.getInstance().isAlive(booleanResponse -> {
+            if (booleanResponse == null) {
+                LogService.warn(LogTag.SERVER_STATUS, "Failed to Call Server, trying again");
+                checkServerConnection();
+            } else if (booleanResponse.isSuccessful()) {
+                LogService.info(LogTag.SERVER_STATUS, "Alive");
+            } else {
+                LogService.warn(LogTag.SERVER_STATUS, "Bad Request");
+            }
+        });
     }
 
     private void createCards() {
@@ -54,7 +122,7 @@ public class MainMenuActivity extends Activity {
     }
 
     private void startCardActivity(View v) {
-        TextView child = (TextView) ((CardView)v).getChildAt(0);
+        TextView child = (TextView) ((CardView) v).getChildAt(0);
         MenuOptions menuOptions = MenuOptions.valueOf(child.getText().toString());
         startActivity(new Intent(this, menuOptions.getActivityClass()));
     }

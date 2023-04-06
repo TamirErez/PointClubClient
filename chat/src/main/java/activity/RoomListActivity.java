@@ -27,7 +27,7 @@ import rest.ChatRestController;
 public class RoomListActivity extends AppCompatActivity {
 
     private RoomListAdapter roomAdapter;
-    private List<Room> roomList = new ArrayList<>();
+    private final List<Room> roomList = new ArrayList<>();
     private RecyclerView roomRecycler;
     private RegisterService registerService;
 
@@ -36,25 +36,9 @@ public class RoomListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
         registerService = new RegisterService(this);
-        registerUserIfNotExist();
-        setupServer();
         initRooms();
         initRoomRecycler();
         setRegisterRoomButtonAction();
-    }
-
-    private void setupServer() {
-        checkServerConnection();
-        if(isUserExist()) {
-            getToken();
-        }
-    }
-
-    private void registerUserIfNotExist() {
-        if (!isUserExist()) {
-            registerService.register(RegisterOption.USER, result ->
-                    LogService.info(LogTag.REGISTER, "New User id: " + result.getId()));
-        }
     }
 
     private void addRoom(String roomName) {
@@ -102,43 +86,5 @@ public class RoomListActivity extends AppCompatActivity {
         });
         rooms.removeAll(roomList);
         rooms.forEach(room -> room.delete());
-    }
-
-    private void checkServerConnection() {
-        RestController.getInstance().isAlive(booleanResponse -> {
-            if (booleanResponse == null) {
-                LogService.warn(LogTag.SERVER_STATUS, "Failed to Call Server, trying again");
-                checkServerConnection();
-            } else if (booleanResponse.isSuccessful()) {
-                LogService.info(LogTag.SERVER_STATUS, "Alive");
-            } else {
-                LogService.warn(LogTag.SERVER_STATUS, "Bad Request");
-            }
-        });
-    }
-
-    private void getToken() {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        LogService.warn(LogTag.TOKEN, task.getException());
-                        return;
-                    }
-
-                    String token = task.getResult();
-                    LogService.info(LogTag.TOKEN, token);
-                    //TODO: Update token only after user is created for the first time
-                    RestController.getInstance().updateToken(token,
-                            response -> LogService.info(LogTag.TOKEN, "Updated Token In Server"));
-                });
-    }
-
-    private boolean isUserExist() {
-        List<User> users = User.listAll(User.class);
-        if (users.size() > 0) {
-            LogService.info(LogTag.QUERY_USER, users.get(0).toString());
-            return true;
-        }
-        return false;
     }
 }
