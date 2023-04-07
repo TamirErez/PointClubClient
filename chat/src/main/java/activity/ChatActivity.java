@@ -1,5 +1,9 @@
 package activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
@@ -13,6 +17,8 @@ import adapter.MessageListAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import pointclub.shared.model.User;
 import pointclub.shared.model.chat.Message;
@@ -42,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         setupMessageRecycler();
         messageEditor = findViewById(R.id.message_editor);
         setActionListenerOnMessageEditor();
+        registerMessageBroadcast();
     }
 
     private void addUserToRoom() {
@@ -108,5 +115,29 @@ public class ChatActivity extends AppCompatActivity {
 
     private boolean isEnterPressed(KeyEvent event) {
         return event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER;
+    }
+
+    private void registerMessageBroadcast() {
+        BroadcastReceiver messageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                System.out.println("Received broadcast");
+                RemoteMessage remoteMessage = (RemoteMessage) intent.getExtras().get("message");
+                try {
+                    Message message = new Message(
+                            Integer.parseInt(remoteMessage.getData().get("id")),
+                            remoteMessage.getData().get("content"),
+                            new Date(Long.parseLong(remoteMessage.getData().get("sendTime"))),
+                            room.getServerId(),
+                            Integer.parseInt(remoteMessage.getData().get("sender"))
+                    );
+                    addMessageToView(message);
+                } catch (NumberFormatException | NullPointerException e) {
+                    LogService.error(LogTag.MESSAGE, "Got bad message", e);
+                }
+            }
+        };
+
+        registerReceiver(messageReceiver, new IntentFilter("MESSAGE_RECEIVED"));
     }
 }

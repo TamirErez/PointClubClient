@@ -31,14 +31,15 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        //TODO: handle message
-        Log.d("msg", "onMessageReceived");
+        LogService.info(LogTag.MESSAGE, "got message",
+                " sender is:" + remoteMessage.getData().get("sender")
+                        + " data is: " + remoteMessage.getData().get("content"));
         if (remoteMessage.getNotification() != null) {
             handleNotification(remoteMessage);
         } else {
-            Log.d("got message",
-                    " sender is:" + remoteMessage.getData().get("sender")
-                            + " data is: " + remoteMessage.getData().get("content"));
+            Intent intent = new Intent("MESSAGE_RECEIVED");
+            intent.putExtra("message", remoteMessage);
+            sendBroadcast(intent);
         }
     }
 
