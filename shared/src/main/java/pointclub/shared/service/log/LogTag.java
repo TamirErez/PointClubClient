@@ -7,5 +7,6 @@ public enum LogTag {
     REGISTER,
     REST_ERROR,
     CHESS,
+    MESSAGE,
     ROOM
 }

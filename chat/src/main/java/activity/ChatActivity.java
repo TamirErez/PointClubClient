@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import adapter.MessageListAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,23 +45,23 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void addUserToRoom() {
-        ChatRestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser(), room),
+        ChatRestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser().getServerId(), room.getServerId()),
                 response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
 
     private void extractRoomFromIntent() {
-        room = Room.findById(Room.class, getIntent().getExtras().getLong("roomId"));
+        room = (Room) getIntent().getExtras().get("room");
     }
 
     private void getRoomMessages() {
-        messageList = room.getMessages();
+        messageList = Message.getMessagesOfRoom(room.getServerId());
         cleanupMessages();
     }
 
     private void cleanupMessages() {
         List<Message> badMessages = new ArrayList<>();
         messageList.forEach(message -> {
-            if(message.getRoom() == null || message.getSender() == null){
+            if (message.getRoomId() == -1 || message.getSenderId() == -1) {
                 badMessages.add(message);
             }
         });
@@ -79,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
         messageEditor.setOnEditorActionListener((textView, actionId, event) -> {
             if (isEnterPressed(event) && textView.getText().length() > 0) {
                 Message newMessage = new Message(-1, textView.getText().toString(),
-                        new Date(), room, User.getCurrentUser());
+                        new Date(), room.getServerId(), User.getCurrentUser().getServerId());
                 addMessageToView(newMessage);
                 sendMessageToServer(newMessage);
             }
@@ -93,6 +94,7 @@ public class ChatActivity extends AppCompatActivity {
         messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
         messageEditor.setText("");
         newMessage.save();
+        LogService.info(LogTag.MESSAGE, "Added message %s to room %s", newMessage.getContent(), newMessage.getRoomId() + "");
     }
 
     private void sendMessageToServer(Message newMessage) {

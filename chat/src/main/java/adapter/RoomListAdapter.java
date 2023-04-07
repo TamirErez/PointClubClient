@@ -11,7 +11,9 @@ import java.util.List;
 
 import activity.ChatActivity;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import pointclub.shared.model.chat.Room;
 import pointclub.chat.R;
 
@@ -42,10 +44,16 @@ public class RoomListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         super.onViewAttachedToWindow(holder);
         View newRoomView = holder.itemView.findViewById(R.id.room_preview_card);
         newRoomView.setOnClickListener(v -> {
+            Room room = getRoomFromView((CardView) v);
             Intent intent = new Intent(context, ChatActivity.class);
-            intent.putExtra("roomId", roomList.get(0).getId());
+            intent.putExtra("room", room);
             context.startActivity(intent);
         });
+    }
+
+    private Room getRoomFromView(CardView roomView) {
+        String roomName = ((TextView) roomView.findViewById(R.id.room_name_preview)).getText().toString();
+        return Room.find(Room.class, "name=?",roomName).listIterator().next();
     }
 
     @Override
