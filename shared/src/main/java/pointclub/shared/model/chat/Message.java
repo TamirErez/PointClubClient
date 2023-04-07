@@ -19,8 +19,8 @@ public class Message extends SugarRecord {
     private int serverId;
     private String content;
     private Date sendTime;
-    private int roomId;
-    private int senderId;
+    private int roomId = -1;
+    private int senderId = -1;
 
     public User getSender() {
         return User.find(User.class, "server_id=?", String.valueOf(senderId)).iterator().next();
