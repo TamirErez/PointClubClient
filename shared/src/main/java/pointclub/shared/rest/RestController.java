@@ -44,6 +44,10 @@ public class RestController {
         callRest(requestsApi.addUserToRoom(roomWithUser), result);
     }
 
+    public void getRoomUsers(Room room, Consumer<Response<List<User>>> result) {
+        callRest(requestsApi.getRoomUsers(room), result);
+    }
+
     protected <T> void callRest(Call<T> call, Consumer<Response<T>> result) {
         call.enqueue(new Callback<>() {
             @Override

@@ -29,4 +29,7 @@ public interface RequestsApi {
 
     @POST("room/addUser")
     Call<Void> addUserToRoom(@Body RoomWithUser roomWithUser);
+
+    @POST("room/users")
+    Call<List<User>> getRoomUsers(@Body Room room);
 }

@@ -8,23 +8,22 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
+import com.google.firebase.messaging.RemoteMessage;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import adapter.MessageListAdapter;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.messaging.RemoteMessage;
-
+import pointclub.chat.R;
 import pointclub.shared.model.User;
 import pointclub.shared.model.chat.Message;
 import pointclub.shared.model.chat.Room;
 import pointclub.shared.model.chat.RoomWithUser;
-import pointclub.chat.R;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
 import rest.ChatRestController;
@@ -43,6 +42,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         extractRoomFromIntent();
+        getRoomUsers();
         addUserToRoom();
         getRoomMessages();
         setupMessageRecycler();
@@ -124,12 +124,13 @@ public class ChatActivity extends AppCompatActivity {
                 System.out.println("Received broadcast");
                 RemoteMessage remoteMessage = (RemoteMessage) intent.getExtras().get("message");
                 try {
+                    Map<String, String> data = remoteMessage.getData();
                     Message message = new Message(
-                            Integer.parseInt(remoteMessage.getData().get("id")),
-                            remoteMessage.getData().get("content"),
-                            new Date(Long.parseLong(remoteMessage.getData().get("sendTime"))),
+                            Integer.parseInt(data.get("id")),
+                            data.get("content"),
+                            new Date(Long.parseLong(data.get("sendTime"))),
                             room.getServerId(),
-                            Integer.parseInt(remoteMessage.getData().get("sender"))
+                            Integer.parseInt(data.get("sender"))
                     );
                     addMessageToView(message);
                 } catch (NumberFormatException | NullPointerException e) {
@@ -139,5 +140,13 @@ public class ChatActivity extends AppCompatActivity {
         };
 
         registerReceiver(messageReceiver, new IntentFilter("MESSAGE_RECEIVED"));
+    }
+
+    private void getRoomUsers() {
+        ChatRestController.getInstance().getRoomUsers(room, response -> {
+            if (response != null && response.body() != null && response.isSuccessful()) {
+                response.body().forEach(user -> user.save());
+            }
+        });
     }
 }
