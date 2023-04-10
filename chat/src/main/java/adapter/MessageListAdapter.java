@@ -64,6 +64,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewType == messageType.receiver.getValue()) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recieve_message, parent, false);
+            //TODO: make different people have different colors
             return new ReceivedMessageHolder(view);
         }
 

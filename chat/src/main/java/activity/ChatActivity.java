@@ -68,6 +68,7 @@ public class ChatActivity extends AppCompatActivity {
             ServerSynchronizer.getInstance().synchronizeList(messageList, listResponse);
             messageAdapter.notifyItemRangeInserted(0, messageList.size());
             messageList.sort(Comparator.comparingInt(Message::getServerId));
+            //TODO: scroll to bottom here
         });
     }
 
@@ -94,6 +95,7 @@ public class ChatActivity extends AppCompatActivity {
         messageList.add(newMessage);
         messageAdapter.notifyItemInserted(messageAdapter.getItemCount() - 1);
         messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+        //TODO: only do this if you sent the message
         messageEditor.setText("");
         newMessage.save();
         LogService.info(LogTag.MESSAGE, "Added message %s to room %s", newMessage.getContent(), newMessage.getRoomId() + "");

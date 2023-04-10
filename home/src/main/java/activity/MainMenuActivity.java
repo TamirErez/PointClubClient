@@ -49,6 +49,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     private void registerUserIfNotExist() {
+        //TODO: fix the crash when first opening the app
         if (!isUserExist()) {
             registerService.register(RegisterOption.USER, result -> {
                 LogService.info(LogTag.REGISTER, "New User id: " + result.getId());
