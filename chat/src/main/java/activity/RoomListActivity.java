@@ -2,27 +2,22 @@ package activity;
 
 import android.os.Bundle;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import adapter.RoomListAdapter;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import pointclub.chat.R;
 import pointclub.shared.enums.RegisterOption;
 import pointclub.shared.model.chat.Room;
-import pointclub.chat.R;
-import pointclub.shared.model.User;
-import pointclub.shared.rest.RestController;
 import pointclub.shared.service.RegisterService;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
 import rest.ChatRestController;
+import pointclub.shared.service.ServerSynchronizer;
 
 public class RoomListActivity extends AppCompatActivity {
 
@@ -36,7 +31,7 @@ public class RoomListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
         registerService = new RegisterService(this);
-        initRooms();
+        getRoomsFromServer();
         initRoomRecycler();
         setRegisterRoomButtonAction();
     }
@@ -65,26 +60,11 @@ public class RoomListActivity extends AppCompatActivity {
         roomRecycler.setAdapter(roomAdapter);
     }
 
-    private void initRooms() {
+    private void getRoomsFromServer() {
         ChatRestController.getInstance().getAllRooms(listResponse -> {
-            if (listResponse != null && listResponse.body() != null && listResponse.isSuccessful()) {
-                roomList.addAll(listResponse.body());
-                roomAdapter.notifyItemRangeInserted(0, roomList.size());
-            }
+            ServerSynchronizer.getInstance().synchronizeList(roomList, listResponse);
+            roomAdapter.notifyItemRangeInserted(0, roomList.size());
             roomList.sort(Comparator.comparingInt(Room::getServerId));
-            syncRoomsWithServer();
         });
-    }
-
-    private void syncRoomsWithServer() {
-        List<Room> rooms = Room.listAll(Room.class);
-        roomList.forEach(room -> {
-            if (!rooms.contains(room)) {
-                room.setId(null);
-                room.save();
-            }
-        });
-        rooms.removeAll(roomList);
-        rooms.forEach(room -> room.delete());
     }
 }
