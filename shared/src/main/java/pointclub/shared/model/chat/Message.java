@@ -27,7 +27,7 @@ public class Message extends PointclubRecord {
     }
 
     public User getSender() {
-        return User.find(User.class, "server_id=?", String.valueOf(senderId)).iterator().next();
+        return User.find( "server_id=?", String.valueOf(senderId)).iterator().next();
     }
 
     public Room getRoom() {
