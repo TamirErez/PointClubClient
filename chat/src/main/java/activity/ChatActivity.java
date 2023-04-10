@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,13 @@ import pointclub.shared.model.chat.RoomWithUser;
 import pointclub.shared.service.log.LogService;
 import pointclub.shared.service.log.LogTag;
 import rest.ChatRestController;
+import pointclub.shared.service.ServerSynchronizer;
 
 public class ChatActivity extends AppCompatActivity {
 
     private MessageListAdapter messageAdapter;
     private RecyclerView messageRecycler;
-    private List<Message> messageList;
+    private final List<Message> messageList = new ArrayList<>();
     private EditText messageEditor;
     private Room room;
 
@@ -52,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void addUserToRoom() {
+        //TODO: if this fails do not allow user to continue
         ChatRestController.getInstance().addUserToRoom(new RoomWithUser(User.getCurrentUser().getServerId(), room.getServerId()),
                 response -> LogService.info(LogTag.ROOM, "Added User to room " + room));
     }
@@ -61,19 +64,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getRoomMessages() {
-        messageList = Message.getMessagesOfRoom(room.getServerId());
-        cleanupMessages();
-    }
-
-    private void cleanupMessages() {
-        List<Message> badMessages = new ArrayList<>();
-        messageList.forEach(message -> {
-            if (message.getRoomId() == -1 || message.getSenderId() == -1) {
-                badMessages.add(message);
-            }
+        ChatRestController.getInstance().getRoomMessages(room, listResponse -> {
+            ServerSynchronizer.getInstance().synchronizeList(messageList, listResponse);
+            messageAdapter.notifyItemRangeInserted(0, messageList.size());
+            messageList.sort(Comparator.comparingInt(Message::getServerId));
         });
-        messageList.removeAll(badMessages);
-        badMessages.forEach(message -> message.delete());
     }
 
     private void setupMessageRecycler() {
