@@ -1,18 +1,12 @@
 package pointclub.shared.model.chat;
 
-import com.orm.SugarRecord;
-
-import java.io.Serializable;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import pointclub.shared.model.PointclubRecord;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class Room extends SugarRecord implements Serializable {
-    private int serverId;
+public class Room extends PointclubRecord {
     private String name;
 
     public Room(String name) {
@@ -20,7 +14,12 @@ public class Room extends SugarRecord implements Serializable {
     }
 
     public Room(int serverId, String name) {
-        this.serverId = serverId;
+        super(serverId);
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
     }
 }

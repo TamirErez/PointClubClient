@@ -6,15 +6,12 @@ import com.orm.dsl.Ignore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends SugarRecord {
-    private int serverId;
+public class User extends PointclubRecord {
     private String name;
     private String token;
 
@@ -26,8 +23,14 @@ public class User extends SugarRecord {
         this.name = name;
     }
 
+    public User(int serverId, String name, String token) {
+        super(serverId);
+        this.name = name;
+        this.token = token;
+    }
+
     public User(int serverId, String name) {
-        this.serverId = serverId;
+        super(serverId);
         this.name = name;
     }
 
@@ -38,5 +41,10 @@ public class User extends SugarRecord {
                     .get(0);
         }
         return currentUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
     }
 }
