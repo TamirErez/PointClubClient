@@ -1,8 +1,9 @@
 package move;
 
 import androidx.annotation.NonNull;
-import lombok.Data;
 import enums.MoveType;
+import enums.PieceType;
+import lombok.Data;
 import piece.AbstractPiece;
 import piece.King;
 import piece.Pawn;
@@ -15,7 +16,7 @@ public class Move {
     MoveType moveType;
     boolean isCapture;
     boolean isPromotion;
-    AbstractPiece promotedPiece;
+    PieceType promotedPieceType;
     Position castleTarget;
     boolean isEnPassant;
     boolean isCheck;
@@ -40,7 +41,7 @@ public class Move {
     }
 
     public Move cloneWithPiece(AbstractPiece movingPiece) {
-        return new Move(start, end, movingPiece, moveType, isCapture, isPromotion, promotedPiece, castleTarget, isEnPassant);
+        return new Move(start, end, movingPiece, moveType, isCapture, isPromotion, promotedPieceType, castleTarget, isEnPassant);
     }
 
     public String getChessNotation() {
@@ -58,11 +59,15 @@ public class Move {
         notation += this.end.toString();
 
         if (this.isPromotion) {
-            notation += "=" + this.promotedPiece.getNotationName();
+            notation += "=" + this.promotedPieceType.getNotationName();
         }
 
         if (this.isCheck) {
             notation += "+";
+        }
+
+        if (this.isEnPassant) {
+            notation += " e.p.";
         }
 
         if (castleTarget != null) {
@@ -77,14 +82,14 @@ public class Move {
         return "O" + "-O".repeat(distance - 2);
     }
 
-    private Move(Position start, Position end, AbstractPiece movingPiece, MoveType moveType, boolean isCapture, boolean isPromotion, AbstractPiece promotedPiece, Position castleTarget, boolean isEnPassant) {
+    private Move(Position start, Position end, AbstractPiece movingPiece, MoveType moveType, boolean isCapture, boolean isPromotion, PieceType promotedPieceType, Position castleTarget, boolean isEnPassant) {
         this.start = start;
         this.end = end;
         this.movingPiece = movingPiece;
         this.moveType = moveType;
         this.isCapture = isCapture;
         this.isPromotion = isPromotion;
-        this.promotedPiece = promotedPiece;
+        this.promotedPieceType = promotedPieceType;
         this.castleTarget = castleTarget;
         this.isEnPassant = isEnPassant;
     }

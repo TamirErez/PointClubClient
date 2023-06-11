@@ -79,6 +79,10 @@ public class GameState implements GameStateAPI {
         updateThreats();
         moves.add(move);
         move.setCheck(isCheck(Colour.getOppositeColor(currentPlayer)));
+        if (move.isPromotion()) {
+            board.removePieceFromPosition(move.getEnd());
+            board.addNewPiece(promotePiece(move, move.getPromotedPieceType()));
+        }
     }
 
     private void castle(Move move) {
@@ -91,12 +95,6 @@ public class GameState implements GameStateAPI {
     private void enPassant(Move move) {
         board.removePieceFromPosition(move.getEnd()
                 .transform(Direction.getOppositeDirection(((Pawn) move.getMovingPiece()).getMovingDirection())));
-    }
-
-    public void move(Move move, PieceType promotedPiece) {
-        move(move);
-        board.removePieceFromPosition(move.getEnd());
-        board.addNewPiece(promotePiece(move, promotedPiece));
     }
 
     public List<Move> getLegalMovesOfPiece(AbstractPiece piece) {
@@ -139,22 +137,22 @@ public class GameState implements GameStateAPI {
             case BLACK_BISHOP:
             case WHITE_BISHOP:
                 Bishop bishop = new Bishop(pieceColour, move.getEnd());
-                move.setPromotedPiece(bishop);
+                move.setPromotedPieceType(promotedPiece);
                 return bishop;
             case BLACK_ROOK:
             case WHITE_ROOK:
                 Rook rook = new Rook(pieceColour, move.getEnd());
-                move.setPromotedPiece(rook);
+                move.setPromotedPieceType(promotedPiece);
                 return rook;
             case BLACK_KNIGHT:
             case WHITE_KNIGHT:
                 Knight knight = new Knight(pieceColour, move.getEnd());
-                move.setPromotedPiece(knight);
+                move.setPromotedPieceType(promotedPiece);
                 return knight;
             case BLACK_QUEEN:
             case WHITE_QUEEN:
                 Queen queen = new Queen(pieceColour, move.getEnd());
-                move.setPromotedPiece(queen);
+                move.setPromotedPieceType(promotedPiece);
                 return queen;
         }
         return EmptyPiece.getInstance();

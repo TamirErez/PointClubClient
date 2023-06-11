@@ -34,6 +34,7 @@ public enum PieceType {
     public boolean isNone() {
         return this.name.equals("NONE");
     }
+
     public boolean isRook() {
         return this.name.equals("ROOK");
     }
