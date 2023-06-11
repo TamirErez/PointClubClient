@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import enums.Colour;
 import enums.PieceType;
 import move.Move;
+import move.MoveParser;
 import move.Position;
 import pointclub.chess.R;
 import pointclub.shared.service.ConstraintsService;
@@ -90,8 +91,17 @@ public class ChessActivity extends AppCompatActivity {
         return gameState.getLegalMovesOfPiece(gameState.getSquareByPosition(new Position(currentPosition)).getPiece());
     }
 
+    public void movePiece(String moveNotation) {
+        //TODO: handle exceptions
+        movePiece(MoveParser.parseMove(moveNotation, gameState));
+    }
+
     public void movePiece(Move move) {
         gameState.move(move);
+        updateBoard(move);
+    }
+
+    private void updateBoard(Move move) {
         setupBoard();
         if (isLocalGame) {
             switchPlayer();

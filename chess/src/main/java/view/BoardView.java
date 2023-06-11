@@ -187,7 +187,7 @@ public class BoardView extends TableLayout {
         possibleMoveImage.setOnClickListener(v -> {
             if (move.isPromotion()) {
                 showPromotionDialog(selectedSquare.getPiece(),
-                        pieceType -> ((ChessActivity) getContext()).movePiece(move, pieceType));
+                        pieceType -> ((ChessActivity) getContext()).movePiece(move));
             } else {
                 ((ChessActivity) getContext()).movePiece(move);
             }
@@ -227,6 +227,7 @@ public class BoardView extends TableLayout {
         flipBoard();
     }
 
+    //TODO: rotate and not mirror
     public void flipBoard() {
         for (int i = 1; i <= 8; i++) {
             TableRow row = findViewByName("row" + (playerColour.equals(Colour.BLACK) ? i : 9 - i));
