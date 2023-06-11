@@ -57,4 +57,8 @@ public enum PieceType {
     public boolean isKnight() {
         return this.name.equals("KNIGHT");
     }
+
+    public String getNotationName() {
+        return isRook() ? "R" : isQueen() ? "Q" : isKing() ? "K" : isBishop() ? "B" : isKnight() ? "N" : "";
+    }
 }

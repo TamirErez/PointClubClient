@@ -80,7 +80,9 @@ public abstract class AbstractPiece {
         }
     }
 
-    public abstract String getNotationName();
+    public String getNotationName() {
+        return type.getNotationName();
+    }
 
     @NonNull
     @Override

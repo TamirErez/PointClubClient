@@ -52,9 +52,4 @@ public class King extends AbstractPiece {
         clone.isMoved = isMoved;
         return clone;
     }
-
-    @Override
-    public String getNotationName() {
-        return "K";
-    }
 }

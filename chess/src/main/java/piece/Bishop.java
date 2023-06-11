@@ -47,9 +47,4 @@ public class Bishop extends AbstractPiece {
     public AbstractPiece clone() {
         return new Bishop(colour, startingPosition);
     }
-
-    @Override
-    public String getNotationName() {
-        return "B";
-    }
 }

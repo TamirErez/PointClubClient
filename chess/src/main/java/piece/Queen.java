@@ -57,9 +57,4 @@ public class Queen extends AbstractPiece {
     public AbstractPiece clone() {
         return new Queen(colour, startingPosition);
     }
-
-    @Override
-    public String getNotationName() {
-        return "Q";
-    }
 }

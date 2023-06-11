@@ -44,9 +44,4 @@ public class Knight extends AbstractPiece {
     public AbstractPiece clone() {
         return new Knight(colour, startingPosition);
     }
-
-    @Override
-    public String getNotationName() {
-        return "N";
-    }
 }
