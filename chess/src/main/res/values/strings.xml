@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Chess</string>
     <string name="x">x</string>
+    <string name="moveHistoryPrefix">Moves: </string>
 </resources>

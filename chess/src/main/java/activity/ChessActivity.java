@@ -1,6 +1,10 @@
 package activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ import view.SquareView;
 public class ChessActivity extends AppCompatActivity {
 
     private BoardView board;
+    private TextView moveHistory;
     private ConstraintLayout chessLayout;
     private GameState gameState;
     private boolean isLocalGame;
@@ -35,13 +40,16 @@ public class ChessActivity extends AppCompatActivity {
         Colour player = (Colour) getIntent().getSerializableExtra("player");
         player = player == null ? Colour.WHITE : player;
         initFields(player);
-        addBoardToCenter();
+        addBoardToActivity();
         setupBoard();
     }
 
     private void initFields(Colour player) {
         chessLayout = findViewById(R.id.chess_layout);
         board = new BoardView(this, player);
+        moveHistory = new TextView(this);
+        initMoveHistory();
+        moveHistory.setText(R.string.moveHistoryPrefix);
         gameState = new GameState();
     }
 
@@ -50,11 +58,11 @@ public class ChessActivity extends AppCompatActivity {
         board.switchPlayer();
     }
 
-    private void addBoardToCenter() {
+    private void addBoardToActivity() {
         chessLayout.addView(board);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(chessLayout);
-        ConstraintsService.addCenterVerticallyConstraint(constraintSet, board.getId(), chessLayout.getId());
+        ConstraintsService.addTopToTopConstraint(constraintSet, board.getId(), chessLayout.getId());
         constraintSet.applyTo(chessLayout);
     }
 
@@ -88,13 +96,34 @@ public class ChessActivity extends AppCompatActivity {
         if (isLocalGame) {
             switchPlayer();
         }
+        addMoveToHistory(move.getChessNotation());
     }
 
-    public void movePiece(Move move, PieceType promotedPiece) {
-        gameState.move(move, promotedPiece);
-        setupBoard();
-        if (isLocalGame) {
-            switchPlayer();
+    private void initMoveHistory() {
+        moveHistory.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        moveHistory.setLayoutParams(params);
+
+        moveHistory.setTextColor(Color.BLACK);
+        moveHistory.setTextSize(20);
+
+        setMoveHistoryPosition();
+    }
+
+    private void setMoveHistoryPosition() {
+        chessLayout.addView(moveHistory);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(chessLayout);
+        ConstraintsService.addStartToStartConstraint(constraintSet, moveHistory.getId(), chessLayout.getId());
+        ConstraintsService.addTopToBottomConstraint(constraintSet, moveHistory.getId(), board.getId());
+        constraintSet.applyTo(chessLayout);
+    }
+
+    private void addMoveToHistory(String move) {
+        if (gameState.getMoves().size() == 1) {
+            moveHistory.setText(String.format("%s %s", moveHistory.getText(), move));
+        } else {
+            moveHistory.setText(String.format("%s, %s", moveHistory.getText(), move));
         }
     }
 }
