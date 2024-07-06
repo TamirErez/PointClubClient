@@ -22,7 +22,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import enums.MenuOptions;
-import pointclub.pointclubclient.R;
+import pointclub.home.R;
 import pointclub.shared.enums.RegisterOption;
 import pointclub.shared.model.User;
 import pointclub.shared.rest.RestController;
